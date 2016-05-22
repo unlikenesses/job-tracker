@@ -88,14 +88,14 @@ class JobsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Job $job)
     {
         $data = array(
             'fields'     => array('client_id', 'project_id', 'name', 'started', 'completed', 'amount', 'currency_id'),
             'clients'    => Client::orderBy('name', 'asc')->get(),
             'projects'   => Project::orderBy('name', 'asc')->get(),
             'currencies' => Currency::orderBy('name', 'desc')->get(),
-            'row'        => Job::findOrFail($id)
+            'row'        => $job
             );
         return view('admin.jobs.edit', $data);
     }
@@ -107,11 +107,9 @@ class JobsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Job $job)
     {
-        $row = Job::findOrFail($id);
-
-        $row->update([
+        $job->update([
             'client_id'   => $request->client_id,
             'project_id'  => $request->project_id,
             'name'        => $request->name,
@@ -130,15 +128,10 @@ class JobsController extends Controller
      * @param int $id 
      * @return \Illuminate\Http\Response
      */
-    public function confirmDelete($id)
+    public function confirmDelete(Job $job)
     {
-        $row = Job::findOrFail($id);
         $data = array(
-            'table'        => 'images',
-            'item'         => 'Image',
-            'displayField' => 'image',
-            'row'          => $row,
-            'page_id'      => $row->page_id
+            'row' => $job
             );
         return view('admin.jobs.confirmDelete', $data);
     }
@@ -149,10 +142,9 @@ class JobsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Job $job)
     {
-        $row = Job::findOrFail($id);
-        $row->delete();
+        $job->delete();
         return redirect('admin/jobs');
     }
 }

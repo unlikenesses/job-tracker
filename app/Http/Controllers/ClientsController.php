@@ -54,27 +54,16 @@ class ClientsController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Client $client)
     {
         $data = array(
             'fields' => array('name', 'address'),
-            'row'    => Client::findOrFail($id)
+            'row'    => $client
             );
         return view('admin.clients.edit', $data);
     }
@@ -86,10 +75,9 @@ class ClientsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Client $client)
     {
-        $row = Client::findOrFail($id);
-        $row->update([
+        $client->update([
             'name' => $request->name,
             'address' => $request->address
         ]);
@@ -102,10 +90,10 @@ class ClientsController extends Controller
      * @param int $id 
      * @return \Illuminate\Http\Response
      */
-    public function confirmDelete($id)
+    public function confirmDelete(Client $client)
     {
         $data = array(
-            'row' => Client::findOrFail($id)
+            'row' => $client
             );
         return view('admin.clients.confirmDelete', $data);
     }
@@ -116,16 +104,9 @@ class ClientsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Client $client)
     {
-        $row = Client::findOrFail($id);
-        $row->delete();
+        $client->delete();
         return redirect('admin/clients');
-    }
-
-    private function _get_latest_pos($page_id)
-    {
-        $page = Image::orderBy('pos', 'desc')->where('page_id', $page_id)->first();
-        if ($page) return $page->pos;
     }
 }

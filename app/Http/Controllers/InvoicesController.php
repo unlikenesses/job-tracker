@@ -118,7 +118,7 @@ class InvoicesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Invoice $invoice)
     {   
         $projects_full = Project::orderBy('name', 'asc')->get();
         $projects = array();
@@ -132,16 +132,15 @@ class InvoicesController extends Controller
         {
             $currency_symbols[$currency->id] = $currency->symbol;
         }
-        $row = Invoice::findOrFail($id);
         $data = array(
             'fields'           => array('name', 'invoiced', 'due', 'paid', 'amount', 'currency_id'),
             'jobs'             => Job::completed()->notInvoiced()->orderBy('completed', 'desc')->get(),
-            'invoice_jobs'     => Job::inInvoice($row->id)->get(),
+            'invoice_jobs'     => Job::inInvoice($invoice->id)->get(),
             'clients'          => Client::orderBy('name', 'asc')->get(),
             'currencies'       => Currency::orderBy('name', 'desc')->get(),
             'projects'         => $projects,
             'currency_symbols' => $currency_symbols,
-            'row'              => $row
+            'row'              => $invoice
             );
         return view('admin.invoices.edit', $data);
     }
@@ -153,16 +152,15 @@ class InvoicesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Invoice $invoice)
     {
-        $row = Invoice::findOrFail($id);
         $client_id = 0;
         foreach ($request->jobs as $job_id)
         {
             $job = Job::findOrFail($job_id);
             $client_id = $job->client_id;
         }
-        $row->update([
+        $invoice->update([
             'client_id'   => $client_id,
             'name'        => $request->name,
             'invoiced'    => date('Y-m-d', strtotime($request->invoiced)),
@@ -173,7 +171,7 @@ class InvoicesController extends Controller
         ]);
         // Now update the jobs:
         // First remove any that were on this invoice:
-        $previousJobs = Job::inInvoice($row->id)->get();
+        $previousJobs = Job::inInvoice($invoice->id)->get();
         foreach ($previousJobs as $job)
         {
             if ( ! in_array($job->id, $request->jobs))
@@ -190,7 +188,7 @@ class InvoicesController extends Controller
             $job = Job::findOrFail($job_id);
             $job->update([
                 'invoiced'   => date('Y-m-d', strtotime($request->invoiced)),
-                'invoice_id' => $id
+                'invoice_id' => $invoice->id
             ]);
         }
         return redirect('admin/invoices');
@@ -202,11 +200,10 @@ class InvoicesController extends Controller
      * @param int $id 
      * @return \Illuminate\Http\Response
      */
-    public function confirmDelete($id)
+    public function confirmDelete(Invoice $invoice)
     {
-        $row = Invoice::findOrFail($id);
         $data = array(
-            'row'          => $row
+            'row' => $invoice
             );
         return view('admin.invoices.confirmDelete', $data);
     }
@@ -217,10 +214,10 @@ class InvoicesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Invoice $invoice)
     {
         // Update relevant jobs:
-        $previousJobs = Job::inInvoice($id)->get();
+        $previousJobs = Job::inInvoice($invoice->id)->get();
         foreach ($previousJobs as $job)
         {
             $job->update([
@@ -228,8 +225,7 @@ class InvoicesController extends Controller
                 'invoice_id' => NULL
             ]);
         }
-        $row = Invoice::findOrFail($id);
-        $row->delete();
+        $invoice->delete();
         return redirect('admin/invoices');
     }
 
@@ -264,9 +260,8 @@ class InvoicesController extends Controller
         return $due;
     }
 
-    public function export($id)
+    public function export(Invoice $invoice)
     {
-        $invoice = Invoice::findOrFail($id);
-
+        
     }
 }

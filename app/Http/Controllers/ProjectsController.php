@@ -68,11 +68,11 @@ class ProjectsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Project $project)
     {
         $data = array(
             'fields'  => array('client_id', 'name'),
-            'row'     => Project::findOrFail($id),
+            'row'     => $project,
             'clients' => Client::orderBy('name', 'asc')->get()
             );
         return view('admin.projects.edit', $data);
@@ -85,10 +85,9 @@ class ProjectsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Project $project)
     {
-        $row = Project::findOrFail($id);
-        $row->update([
+        $project->update([
             'client_id' => $request->client_id,
             'name'      => $request->name
         ]);
@@ -101,10 +100,10 @@ class ProjectsController extends Controller
      * @param int $id 
      * @return \Illuminate\Http\Response
      */
-    public function confirmDelete($id)
+    public function confirmDelete(Project $project)
     {
         $data = array(
-            'row' => Project::findOrFail($id)
+            'row' => $project
             );
         return view('admin.projects.confirmDelete', $data);
     }
@@ -115,10 +114,9 @@ class ProjectsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Project $project)
     {
-        $row = Project::findOrFail($id);
-        $row->delete();
+        $project->delete();
         return redirect('admin/projects');
     }
 }

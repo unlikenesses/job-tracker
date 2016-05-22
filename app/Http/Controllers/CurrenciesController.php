@@ -54,27 +54,16 @@ class CurrenciesController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Currency $currency)
     {
         $data = array(
             'fields' => array('name', 'symbol'),
-            'row'    => Currency::findOrFail($id)
+            'row'    => $currency
             );
         return view('admin.currencies.edit', $data);
     }
@@ -86,11 +75,10 @@ class CurrenciesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Currency $currency)
     {
-        $row = Currency::findOrFail($id);
-        $row->update([
-            'name' => $request->name,
+        $currency->update([
+            'name'    => $request->name,
             'address' => $request->symbol
         ]);
         return redirect('admin/currencies');
@@ -102,10 +90,10 @@ class CurrenciesController extends Controller
      * @param int $id 
      * @return \Illuminate\Http\Response
      */
-    public function confirmDelete($id)
+    public function confirmDelete(Currency $currency)
     {
         $data = array(
-            'row' => Currency::findOrFail($id)
+            'row' => $currency
             );
         return view('admin.currencies.confirmDelete', $data);
     }
@@ -116,16 +104,9 @@ class CurrenciesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Currency $currency)
     {
-        $row = Currency::findOrFail($id);
-        $row->delete();
+        $currency->delete();
         return redirect('admin/currencies');
-    }
-
-    private function _get_latest_pos($page_id)
-    {
-        $page = Image::orderBy('pos', 'desc')->where('page_id', $page_id)->first();
-        if ($page) return $page->pos;
     }
 }
