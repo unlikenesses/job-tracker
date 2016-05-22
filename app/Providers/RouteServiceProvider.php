@@ -25,12 +25,6 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(Router $router)
     {
         parent::boot($router);
-
-        $router->model('job_id', 'App\Job');
-        $router->model('invoice_id', 'App\Invoice');
-        $router->model('client_id', 'App\Client');
-        $router->model('project_id', 'App\Project');
-        $router->model('currency_id', 'App\Currency');
     }
 
     /**
