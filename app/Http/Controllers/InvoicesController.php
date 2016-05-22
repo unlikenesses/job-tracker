@@ -22,90 +22,24 @@ class InvoicesController extends Controller
      */
     public function index()
     {
-        $clients_full = Client::orderBy('name', 'asc')->get();
-        $clients = array();
-        foreach ($clients_full as $client)
-        {
-            $clients[$client->id] = $client->name;
-        }
-        $projects_full = Project::orderBy('name', 'asc')->get();
-        $projects = array();
-        foreach ($projects_full as $project)
-        {
-            $projects[$project->id] = $project->name;
-        }
-        $currencies_full = Currency::orderBy('name', 'desc')->get();
-        $currency_symbols = array();
-        foreach ($currencies_full as $currency)
-        {
-            $currency_symbols[$currency->id] = $currency->symbol;
-        }
         $data = array(
-            'fields'           => array('client_id', 'name', 'invoiced', 'due', 'paid', 'amount'),
-            'rows'             => Invoice::orderBy('name', 'desc')->get(),
-            'clients'          => $clients,
-            'projects'         => $projects,
-            'currency_symbols' => $currency_symbols
+            'rows' => Invoice::orderBy('name', 'desc')->get()
             );
         return view('admin.invoices.index', $data);
     }
 
     public function overdue()
     {
-        $clients_full = Client::orderBy('name', 'asc')->get();
-        $clients = array();
-        foreach ($clients_full as $client)
-        {
-            $clients[$client->id] = $client->name;
-        }
-        $projects_full = Project::orderBy('name', 'asc')->get();
-        $projects = array();
-        foreach ($projects_full as $project)
-        {
-            $projects[$project->id] = $project->name;
-        }
-        $currencies_full = Currency::orderBy('name', 'desc')->get();
-        $currency_symbols = array();
-        foreach ($currencies_full as $currency)
-        {
-            $currency_symbols[$currency->id] = $currency->symbol;
-        }
         $data = array(
-            'fields'           => array('client_id', 'name', 'invoiced', 'due', 'paid', 'amount'),
-            'rows'             => Invoice::overdue()->orderBy('name', 'desc')->get(),
-            'clients'          => $clients,
-            'projects'         => $projects,
-            'currency_symbols' => $currency_symbols
+            'rows' => Invoice::overdue()->orderBy('name', 'desc')->get()
             );
         return view('admin.invoices.index', $data);
     }
 
     public function not_due()
     {
-        $clients_full = Client::orderBy('name', 'asc')->get();
-        $clients = array();
-        foreach ($clients_full as $client)
-        {
-            $clients[$client->id] = $client->name;
-        }
-        $projects_full = Project::orderBy('name', 'asc')->get();
-        $projects = array();
-        foreach ($projects_full as $project)
-        {
-            $projects[$project->id] = $project->name;
-        }
-        $currencies_full = Currency::orderBy('name', 'desc')->get();
-        $currency_symbols = array();
-        foreach ($currencies_full as $currency)
-        {
-            $currency_symbols[$currency->id] = $currency->symbol;
-        }
         $data = array(
-            'fields'           => array('client_id', 'name', 'invoiced', 'due', 'paid', 'amount'),
-            'rows'             => Invoice::notDue()->orderBy('name', 'desc')->get(),
-            'clients'          => $clients,
-            'projects'         => $projects,
-            'currency_symbols' => $currency_symbols
+            'rows' => Invoice::notDue()->orderBy('name', 'desc')->get()
             );
         return view('admin.invoices.index', $data);
     }
