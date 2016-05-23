@@ -62,6 +62,14 @@ Route::group(['middleware' => 'web'], function() {
         Route::get('currencies/{currency}/delete', 'CurrenciesController@confirmDelete');
         Route::delete('currencies/{currency}', 'CurrenciesController@destroy');
 
+        Route::get('banks', 'BanksController@index');
+        Route::get('banks/create', 'BanksController@create');
+        Route::post('banks', 'BanksController@store');
+        Route::get('banks/{bank}/edit', 'BanksController@edit');
+        Route::patch('banks/{bank}', 'BanksController@update');
+        Route::get('banks/{bank}/delete', 'BanksController@confirmDelete');
+        Route::delete('banks/{bank}', 'BanksController@destroy');
+
         Route::get('users', 'UsersController@index');
         Route::get('users/create', 'UsersController@create');
         Route::post('users', 'UsersController@store');

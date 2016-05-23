@@ -42,6 +42,16 @@
                     @endforeach
                 </select>
 
+            @elseif ($field == 'bank_id')
+
+                <select name="{{ $field }}" class="form-control">
+                    @foreach ($banks as $bank)
+                        <option value="{{ $bank->id }}" @if (isset($row->$field) && $row->$field == $bank->id) {!! 'selected="selected"' !!} @endif>
+                            {{ $bank->name }}
+                        </option>
+                    @endforeach
+                </select>
+
             @elseif ($field == 'invoiced')
 
                 <input type="text" name="{{ $field }}" class="form-control datepicker" value="{{ $row->$field or $invoiced }}">

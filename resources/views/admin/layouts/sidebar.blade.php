@@ -20,12 +20,13 @@
                     <li><a href="{{ url('admin/invoices/create') }}">Add an invoice</a></li>
                 </ul>
             </li>
-            <li class="treeview @if ($method == 'clients' || $method == 'projects' || $method == 'currencies' || $method == 'text') {{ 'active' }} @endif">
+            <li class="treeview @if ($method == 'clients' || $method == 'projects' || $method == 'currencies' || $method == 'banks' || $method == 'text') {{ 'active' }} @endif">
                 <a href="#">Admin</a>
                 <ul class="treeview-menu">
                     <li><a href="{{ url('admin/clients') }}">Clients</a></li>
                     <li><a href="{{ url('admin/projects') }}">Projects</a></li>
                     <li><a href="{{ url('admin/currencies') }}">Currencies</a></li>
+                    <li><a href="{{ url('admin/banks') }}">Banks</a></li>
                     <li><a href="{{ url('admin/text/1') }}">Invoice Address</a></li>
                     <li><a href="{{ url('admin/text/2') }}">Invoice Footer (EN)</a></li>
                     <li><a href="{{ url('admin/text/3') }}">Invoice Footer (DE)</a></li>

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Request;
 use App\Job;
+use App\Bank;
 use App\Client;
 use App\Project;
 use App\Currency;
@@ -22,6 +23,7 @@ class ViewComposerProvider extends ServiceProvider
         $this->composeClientsPages();
         $this->composeProjectsPages();
         $this->composeCurrenciesPages();
+        $this->composeBanksPages();
         $this->composeJobsIndex();
         $this->composeJobsForms();
         $this->composeInvoicesIndex();
@@ -75,6 +77,14 @@ class ViewComposerProvider extends ServiceProvider
         });
     }
 
+    public function composeBanksPages()
+    {
+        view()->composer('admin.banks.*', function($view)
+        {
+            $view->with('fields', array('name', 'details'));
+        });
+    }
+
     public function composeJobsIndex()
     {
         view()->composer('admin.jobs.index', function($view)
@@ -117,7 +127,8 @@ class ViewComposerProvider extends ServiceProvider
             $helper_arrays = $this->buildHelperArrays();
             $view->with('projects', $helper_arrays['projects']);
             $view->with('currency_symbols', $helper_arrays['currency_symbols']);
-            $view->with('fields', array('client_id', 'name', 'invoiced', 'due', 'paid', 'amount', 'currency_id'));
+            $view->with('fields', array('client_id', 'name', 'invoiced', 'due', 'paid', 'amount', 'currency_id', 'bank_id'));
+            $view->with('banks', Bank::orderBy('name', 'asc')->get());
             $view->with('clients', Client::orderBy('name', 'asc')->get());
             $view->with('jobs', Job::completed()->notInvoiced()->orderBy('completed', 'desc')->get());
             $view->with('currencies', Currency::orderBy('name', 'desc')->get());
