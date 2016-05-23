@@ -1,6 +1,6 @@
 $(function() {
     
-    $('#editArticle').summernote()
+    $('#editArticle').summernote({height: 200})
 
     $('.datepicker').datepicker({'dateFormat':'dd-mm-yy'});
 
