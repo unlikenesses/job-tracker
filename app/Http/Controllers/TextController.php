@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Page;
 use App\Text;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -30,12 +29,9 @@ class TextController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Text $text)
     {
-        $text = Text::findOrFail($id);
-
         $text->update($request->all());
-
-        return redirect('admin/text/' . $id);
+        return redirect('admin/text/' . $text->id);
     }
 }

@@ -17,7 +17,7 @@ class CreateJobsTable extends Migration
             $table->integer('client_id')->unsigned();
             $table->integer('project_id')->unsigned();
             $table->text('name');
-            $table->date('started');
+            $table->date('started')->nullable();
             $table->date('completed')->nullable();
             $table->date('invoiced')->nullable();
             $table->integer('invoice_id')->unsigned()->nullable();

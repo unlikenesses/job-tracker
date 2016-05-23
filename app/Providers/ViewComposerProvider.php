@@ -100,7 +100,7 @@ class ViewComposerProvider extends ServiceProvider
 
     public function composeInvoicesIndex()
     {
-        view()->composer('admin.invoices.index', function($view)
+        view()->composer(['admin.invoices.index', 'admin.pdf.invoice'], function($view)
         {
             $helper_arrays = $this->buildHelperArrays();
             $view->with('clients', $helper_arrays['clients']);

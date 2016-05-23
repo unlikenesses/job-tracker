@@ -14,8 +14,8 @@ Route::group(['middleware' => 'web'], function() {
 
         Route::post('sort', 'AdminController@sort');
 
-        Route::get('text/{id}', 'TextController@edit');
-        Route::patch('text/{id}', 'TextController@update');
+        Route::get('text/{text}', 'TextController@edit');
+        Route::patch('text/{text}', 'TextController@update');
 
         Route::get('jobs', 'JobsController@index');
         Route::get('jobs/open', 'JobsController@open');
