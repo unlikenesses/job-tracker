@@ -18,11 +18,7 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        $data = array(
-            'fields' => array('name', 'address'),
-            'rows'   => Client::orderBy('name', 'asc')->get()
-            );
-        return view('admin.clients.index', $data);
+        return view('admin.clients.index', array('rows' => Client::orderBy('name', 'asc')->get()));
     }
 
     /**
@@ -32,10 +28,7 @@ class ClientsController extends Controller
      */
     public function create()
     {
-        $data = array(
-            'fields'  => array('name', 'address'),
-            );
-        return view('admin.clients.create', $data);
+        return view('admin.clients.create');
     }
 
     /**
@@ -46,9 +39,7 @@ class ClientsController extends Controller
      */
     public function store(Request $request)
     {
-        $client = new Client;
-        $client->name = $request->name;
-        $client->address = $request->address;
+        $client = new Client($request->all());
         $client->save();
         return redirect('admin/clients');
     }
@@ -61,11 +52,7 @@ class ClientsController extends Controller
      */
     public function edit(Client $client)
     {
-        $data = array(
-            'fields' => array('name', 'address'),
-            'row'    => $client
-            );
-        return view('admin.clients.edit', $data);
+        return view('admin.clients.edit', array('row' => $client));
     }
 
     /**
@@ -77,10 +64,7 @@ class ClientsController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        $client->update([
-            'name' => $request->name,
-            'address' => $request->address
-        ]);
+        $client->update($request->all());
         return redirect('admin/clients');
     }
 
@@ -92,10 +76,7 @@ class ClientsController extends Controller
      */
     public function confirmDelete(Client $client)
     {
-        $data = array(
-            'row' => $client
-            );
-        return view('admin.clients.confirmDelete', $data);
+        return view('admin.clients.confirmDelete', array('row' => $client));
     }
 
     /**

@@ -22,7 +22,17 @@
 
         <div class="col-sm-6">
 
-            @if ($field == 'currency_id')
+            @if ($field == 'client_id')
+
+                <select name="{{ $field }}" class="form-control">
+                    @foreach ($clients as $client)
+                        <option value="{{ $client->id }}" @if (isset($row->$field) && $row->$field == $client->id) {!! 'selected="selected"' !!} @endif>
+                            {{ $client->name }}
+                        </option>
+                    @endforeach
+                </select>
+
+            @elseif ($field == 'currency_id')
 
                 <select name="{{ $field }}" class="form-control">
                     @foreach ($currencies as $currency)
@@ -33,22 +43,20 @@
                 </select>
 
             @elseif ($field == 'invoiced')
-    
-                <input type="text" name="{{ $field }}" class="form-control datepicker" value="<?php if (isset($row) && $row->$field != NULL) { echo date('d-m-Y', strtotime($row->$field)); } elseif (isset($invoiced)) { echo $invoiced; } ?>">
+
+                <input type="text" name="{{ $field }}" class="form-control datepicker" value="{{ $row->$field or $invoiced }}">
 
             @elseif ($field == 'due')
 
-                <input type="text" name="{{ $field }}" class="form-control datepicker" value="<?php if (isset($row) && $row->$field != NULL) { echo date('d-m-Y', strtotime($row->$field)); } elseif (isset($due)) { echo $due; } ?>">
-
-            @elseif ($field == 'paid')
-
-                <input type="text" name="{{ $field }}" class="form-control datepicker" value="<?php if (isset($row) && $row->$field != NULL) { echo date('d-m-Y', strtotime($row->$field)); } ?>">
+                <input type="text" name="{{ $field }}" class="form-control datepicker" value="{{ $row->$field or $due }}">
 
             @elseif ($field == 'name')
+
                 <input type="text" name="{{ $field }}" class="form-control" value="<?php if (isset($new_invoice_number)) { echo $new_invoice_number; } elseif (isset($row)) { echo $row->$field; } ?>">
+
             @else
 
-                <input type="text" name="{{ $field }}" class="form-control" value="{{ $row->$field or '' }}">
+                <input type="text" name="{{ $field }}" class="form-control @if ($field == 'paid') {{ 'datepicker' }} @endif" value="{{ $row->$field or '' }}">
 
             @endif
         </div>

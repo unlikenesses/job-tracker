@@ -44,4 +44,24 @@ class Job extends Model
     {
         return $query->where('invoice_id', $invoice_id);
     }
+
+    public function setStartedAttribute($value)
+    {
+        $this->attributes['started'] = date('Y-m-d', strtotime($value));
+    }
+
+    public function setCompletedAttribute($value)
+    {
+        $this->attributes['completed'] = ($value != '') ? date('Y-m-d', strtotime($value)) : NULL;
+    }
+
+    public function getStartedAttribute($value)
+    {
+        return ($value != '') ? date('d-m-Y', strtotime($value)) : NULL;
+    }
+
+    public function getCompletedAttribute($value)
+    {
+        return ($value != '') ? date('d-m-Y', strtotime($value)) : NULL;
+    }
 }

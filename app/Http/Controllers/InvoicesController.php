@@ -51,28 +51,10 @@ class InvoicesController extends Controller
      */
     public function create()
     {
-        $projects_full = Project::orderBy('name', 'asc')->get();
-        $projects = array();
-        foreach ($projects_full as $project)
-        {
-            $projects[$project->id] = $project->name;
-        }
-        $currencies_full = Currency::orderBy('name', 'desc')->get();
-        $currency_symbols = array();
-        foreach ($currencies_full as $currency)
-        {
-            $currency_symbols[$currency->id] = $currency->symbol;
-        }
         $data = array(
-            'fields'     => array('name', 'invoiced', 'due', 'paid', 'amount', 'currency_id'),
-            'jobs'       => Job::completed()->notInvoiced()->orderBy('completed', 'desc')->get(),
-            'clients'    => Client::orderBy('name', 'asc')->get(),
-            'currencies' => Currency::orderBy('name', 'desc')->get(),
-            'projects'   => $projects,
-            'currency_symbols' => $currency_symbols,
             'new_invoice_number' => $this->new_number(),
-            'invoiced' => date('d-m-Y'),
-            'due' => $this->due_date()
+            'invoiced'           => date('d-m-Y'),
+            'due'                => $this->due_date()
             );
         return view('admin.invoices.create', $data);
     }
@@ -85,31 +67,22 @@ class InvoicesController extends Controller
      */
     public function store(Request $request)
     {
-        $invoice = new Invoice;
-        $client_id = 0;
-        foreach ($request->jobs as $job_id)
-        {
-            $job = Job::findOrFail($job_id);
-            $client_id = $job->client_id;
-        }
-        $invoice->client_id = $client_id;
-        $invoice->name = $request->name;
-        $invoice->invoiced = date('Y-m-d', strtotime($request->invoiced));
-        $invoice->due = ($request->due != '') ? date('Y-m-d', strtotime($request->due)) : NULL;
-        $invoice->paid = ($request->paid != '') ? date('Y-m-d', strtotime($request->paid)) : NULL;
-        $invoice->amount = $request->amount;
-        $invoice->currency_id = $request->currency_id;
+        $invoice = new Invoice($request->all());
         $invoice->save();
-        // Now update the jobs:
-        foreach ($request->jobs as $job_id)
+        $this->updateInvoiceJobs($request, $invoice->id);        
+        return redirect('admin/invoices');
+    }
+
+    public function updateInvoiceJobs($request, $invoiceId)
+    {
+        foreach ($request->jobs as $jobId)
         {
-            $job = Job::findOrFail($job_id);
+            $job = Job::findOrFail($jobId);
             $job->update([
                 'invoiced'   => date('Y-m-d', strtotime($request->invoiced)),
-                'invoice_id' => $invoice->id
+                'invoice_id' => $invoiceId
             ]);
         }
-        return redirect('admin/invoices');
     }
 
     /**
@@ -120,27 +93,9 @@ class InvoicesController extends Controller
      */
     public function edit(Invoice $invoice)
     {   
-        $projects_full = Project::orderBy('name', 'asc')->get();
-        $projects = array();
-        foreach ($projects_full as $project)
-        {
-            $projects[$project->id] = $project->name;
-        }
-        $currencies_full = Currency::orderBy('name', 'desc')->get();
-        $currency_symbols = array();
-        foreach ($currencies_full as $currency)
-        {
-            $currency_symbols[$currency->id] = $currency->symbol;
-        }
         $data = array(
-            'fields'           => array('name', 'invoiced', 'due', 'paid', 'amount', 'currency_id'),
-            'jobs'             => Job::completed()->notInvoiced()->orderBy('completed', 'desc')->get(),
-            'invoice_jobs'     => Job::inInvoice($invoice->id)->get(),
-            'clients'          => Client::orderBy('name', 'asc')->get(),
-            'currencies'       => Currency::orderBy('name', 'desc')->get(),
-            'projects'         => $projects,
-            'currency_symbols' => $currency_symbols,
-            'row'              => $invoice
+            'invoice_jobs' => Job::inInvoice($invoice->id)->get(),
+            'row'          => $invoice
             );
         return view('admin.invoices.edit', $data);
     }
@@ -154,23 +109,7 @@ class InvoicesController extends Controller
      */
     public function update(Request $request, Invoice $invoice)
     {
-        $client_id = 0;
-        foreach ($request->jobs as $job_id)
-        {
-            $job = Job::findOrFail($job_id);
-            $client_id = $job->client_id;
-        }
-        $invoice->update([
-            'client_id'   => $client_id,
-            'name'        => $request->name,
-            'invoiced'    => date('Y-m-d', strtotime($request->invoiced)),
-            'due'         => ($request->due != '') ? date('Y-m-d', strtotime($request->due)) : NULL,
-            'paid'        => ($request->paid != '') ? date('Y-m-d', strtotime($request->paid)) : NULL,
-            'amount'      => $request->amount,
-            'currency_id' => $request->currency_id,
-        ]);
-        // Now update the jobs:
-        // First remove any that were on this invoice:
+        $invoice->update($request->all());
         $previousJobs = Job::inInvoice($invoice->id)->get();
         foreach ($previousJobs as $job)
         {
@@ -182,15 +121,7 @@ class InvoicesController extends Controller
                 ]);
             }
         }
-        // Now add the invoice to the sent jobs:
-        foreach ($request->jobs as $job_id)
-        {
-            $job = Job::findOrFail($job_id);
-            $job->update([
-                'invoiced'   => date('Y-m-d', strtotime($request->invoiced)),
-                'invoice_id' => $invoice->id
-            ]);
-        }
+        $this->updateInvoiceJobs($request, $invoice->id);
         return redirect('admin/invoices');
     }
 
@@ -202,10 +133,7 @@ class InvoicesController extends Controller
      */
     public function confirmDelete(Invoice $invoice)
     {
-        $data = array(
-            'row' => $invoice
-            );
-        return view('admin.invoices.confirmDelete', $data);
+        return view('admin.invoices.confirmDelete', array('row' => $invoice));
     }
 
     /**
@@ -229,6 +157,11 @@ class InvoicesController extends Controller
         return redirect('admin/invoices');
     }
 
+    /**
+     * Return a new invoice number.
+     * 
+     * @return string
+     */
     public function new_number()
     {
         $invoice_year = '';
@@ -252,6 +185,11 @@ class InvoicesController extends Controller
         return $new_invoice_year . '-' . $new_invoice_number;
     }
 
+    /**
+     * Calculate the due date of an invoice.
+     * 
+     * @return string
+     */
     public function due_date()
     {
         $due = date('d-m-Y', strtotime('+30 days'));

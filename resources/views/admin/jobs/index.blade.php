@@ -33,9 +33,7 @@
 											@if ($field == 'amount')
 												{{ $currency_symbols[$row->currency_id] }}
 											@endif
-											@if (($field == 'started' || $field == 'completed') && $row->$field != NULL)
-												{{ date('d M Y', strtotime($row->$field)) }}
-											@elseif ($field == 'client_id')
+											@if ($field == 'client_id')
 												{{ $clients[$row->$field] }}
 											@elseif ($field == 'project_id')
 												{{ $projects[$row->$field] }}

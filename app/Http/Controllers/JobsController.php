@@ -53,13 +53,7 @@ class JobsController extends Controller
      */
     public function create()
     {
-        $data = array(
-            'fields'     => array('client_id', 'project_id', 'name', 'started', 'completed', 'amount', 'currency_id'),
-            'clients'    => Client::orderBy('name', 'asc')->get(),
-            'projects'   => Project::orderBy('name', 'asc')->get(),
-            'currencies' => Currency::orderBy('name', 'desc')->get()
-            );
-        return view('admin.jobs.create', $data);
+        return view('admin.jobs.create');
     }
 
     /**
@@ -70,14 +64,7 @@ class JobsController extends Controller
      */
     public function store(Request $request)
     {
-        $job = new Job;
-        $job->client_id = $request->client_id;
-        $job->project_id = $request->project_id;
-        $job->name = $request->name;
-        $job->started = date('Y-m-d', strtotime($request->started));
-        $job->completed = ($request->completed != '') ? date('Y-m-d', strtotime($request->completed)) : NULL;
-        $job->amount = $request->amount;
-        $job->currency_id = $request->currency_id;
+        $job = new Job($request->all());
         $job->save();
         return redirect('admin/jobs');
     }
@@ -90,14 +77,7 @@ class JobsController extends Controller
      */
     public function edit(Job $job)
     {
-        $data = array(
-            'fields'     => array('client_id', 'project_id', 'name', 'started', 'completed', 'amount', 'currency_id'),
-            'clients'    => Client::orderBy('name', 'asc')->get(),
-            'projects'   => Project::orderBy('name', 'asc')->get(),
-            'currencies' => Currency::orderBy('name', 'desc')->get(),
-            'row'        => $job
-            );
-        return view('admin.jobs.edit', $data);
+        return view('admin.jobs.edit', array('row' => $job));
     }
 
     /**
@@ -109,16 +89,7 @@ class JobsController extends Controller
      */
     public function update(Request $request, Job $job)
     {
-        $job->update([
-            'client_id'   => $request->client_id,
-            'project_id'  => $request->project_id,
-            'name'        => $request->name,
-            'started'     => date('Y-m-d', strtotime($request->started)),
-            'completed'   => ($request->completed != '') ? date('Y-m-d', strtotime($request->completed)) : NULL,
-            'amount'      => $request->amount,
-            'currency_id' => $request->currency_id,
-        ]);
-
+        $job->update($request->all());
         return redirect('admin/jobs');
     }
 
@@ -130,10 +101,7 @@ class JobsController extends Controller
      */
     public function confirmDelete(Job $job)
     {
-        $data = array(
-            'row' => $job
-            );
-        return view('admin.jobs.confirmDelete', $data);
+        return view('admin.jobs.confirmDelete', array('row' => $job));
     }
 
     /**

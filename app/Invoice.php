@@ -29,4 +29,34 @@ class Invoice extends Model
     {
         return $query->whereNotNull('invoiced')->whereNull('paid')->where('due', '>', date('Y-m-d'));
     }
+
+    public function setInvoicedAttribute($value)
+    {
+        $this->attributes['invoiced'] = date('Y-m-d', strtotime($value));
+    }
+
+    public function setDueAttribute($value)
+    {
+        $this->attributes['due'] = ($value != '') ? date('Y-m-d', strtotime($value)) : NULL;
+    }
+
+    public function setPaidAttribute($value)
+    {
+        $this->attributes['paid'] = ($value != '') ? date('Y-m-d', strtotime($value)) : NULL;
+    }
+
+    public function getInvoicedAttribute($value)
+    {
+        return ($value != '') ? date('d-m-Y', strtotime($value)) : NULL;
+    }
+
+    public function getDueAttribute($value)
+    {
+        return ($value != '') ? date('d-m-Y', strtotime($value)) : NULL;
+    }
+
+    public function getPaidAttribute($value)
+    {
+        return ($value != '') ? date('d-m-Y', strtotime($value)) : NULL;
+    }
 }

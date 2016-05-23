@@ -18,11 +18,7 @@ class CurrenciesController extends Controller
      */
     public function index()
     {
-        $data = array(
-            'fields' => array('name', 'symbol'),
-            'rows'   => Currency::orderBy('name', 'asc')->get()
-            );
-        return view('admin.currencies.index', $data);
+        return view('admin.currencies.index', array('rows' => Currency::orderBy('name', 'asc')->get()));
     }
 
     /**
@@ -32,10 +28,7 @@ class CurrenciesController extends Controller
      */
     public function create()
     {
-        $data = array(
-            'fields' => array('name', 'symbol'),
-            );
-        return view('admin.currencies.create', $data);
+        return view('admin.currencies.create');
     }
 
     /**
@@ -46,9 +39,7 @@ class CurrenciesController extends Controller
      */
     public function store(Request $request)
     {
-        $client = new Currency;
-        $client->name = $request->name;
-        $client->symbol = $request->symbol;
+        $client = new Currency($request->all());
         $client->save();
         return redirect('admin/currencies');
     }
@@ -61,11 +52,7 @@ class CurrenciesController extends Controller
      */
     public function edit(Currency $currency)
     {
-        $data = array(
-            'fields' => array('name', 'symbol'),
-            'row'    => $currency
-            );
-        return view('admin.currencies.edit', $data);
+        return view('admin.currencies.edit', array('row' => $currency));
     }
 
     /**
@@ -77,10 +64,7 @@ class CurrenciesController extends Controller
      */
     public function update(Request $request, Currency $currency)
     {
-        $currency->update([
-            'name'    => $request->name,
-            'address' => $request->symbol
-        ]);
+        $currency->update($request->all());
         return redirect('admin/currencies');
     }
 
@@ -92,10 +76,7 @@ class CurrenciesController extends Controller
      */
     public function confirmDelete(Currency $currency)
     {
-        $data = array(
-            'row' => $currency
-            );
-        return view('admin.currencies.confirmDelete', $data);
+        return view('admin.currencies.confirmDelete', array('row' => $currency));
     }
 
     /**

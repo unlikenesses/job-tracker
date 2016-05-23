@@ -37,13 +37,9 @@
                     @endforeach
                 </select>
 
-            @elseif ($field == 'started' || $field == 'completed')
-    
-                <input type="text" name="{{ $field }}" class="form-control datepicker" value="@if (isset($row) && $row->$field != NULL) {{ date('d-m-Y', strtotime($row->$field)) }} @endif">
-
             @else
 
-                <input type="text" name="{{ $field }}" class="form-control" value="{{ $row->$field or '' }}">
+                <input type="text" name="{{ $field }}" class="form-control @if ($field == 'started' || $field == 'completed') {{ 'datepicker' }} @endif" value="{{ $row->$field or '' }}">
 
             @endif
         </div>

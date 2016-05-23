@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Request;
+use App\Job;
 use App\Client;
 use App\Project;
 use App\Currency;
@@ -18,8 +19,13 @@ class ViewComposerProvider extends ServiceProvider
     public function boot()
     {
         $this->composeUriSegments();
+        $this->composeClientsPages();
+        $this->composeProjectsPages();
+        $this->composeCurrenciesPages();
         $this->composeJobsIndex();
+        $this->composeJobsForms();
         $this->composeInvoicesIndex();
+        $this->composeInvoicesForms();
     }
 
     /**
@@ -41,6 +47,34 @@ class ViewComposerProvider extends ServiceProvider
         });
     }
 
+    public function composeClientsPages()
+    {
+        view()->composer('admin.clients.*', function($view)
+        {
+            $view->with('fields', array('name', 'address'));
+        });
+    }
+
+    public function composeProjectsPages()
+    {
+        view()->composer('admin.projects.*', function($view)
+        {
+            $view->with('fields', array('client_id', 'name'));
+        });
+        view()->composer(['admin.projects.edit', 'admin.projects.create'], function($view)
+        {
+            $view->with('clients', Client::orderBy('name', 'asc')->get());
+        });
+    }
+
+    public function composeCurrenciesPages()
+    {
+        view()->composer('admin.currencies.*', function($view)
+        {
+            $view->with('fields', array('name', 'symbol'));
+        });
+    }
+
     public function composeJobsIndex()
     {
         view()->composer('admin.jobs.index', function($view)
@@ -53,6 +87,16 @@ class ViewComposerProvider extends ServiceProvider
         });
     }
 
+    public function composeJobsForms()
+    {
+        view()->composer('admin.jobs.form', function($view)
+        {
+            $view->with('fields', array('client_id', 'project_id', 'name', 'started', 'completed', 'amount', 'currency_id'));
+            $view->with('clients', Client::orderBy('name', 'asc')->get());
+            $view->with('projects', Project::orderBy('name', 'asc')->get());
+            $view->with('currencies', Currency::orderBy('name', 'desc')->get());
+        });
+    }
 
     public function composeInvoicesIndex()
     {
@@ -63,6 +107,20 @@ class ViewComposerProvider extends ServiceProvider
             $view->with('projects', $helper_arrays['projects']);
             $view->with('currency_symbols', $helper_arrays['currency_symbols']);
             $view->with('fields', array('client_id', 'name', 'invoiced', 'due', 'paid', 'amount'));
+        });
+    }
+
+    public function composeInvoicesForms()
+    {
+        view()->composer('admin.invoices.form', function($view)
+        {
+            $helper_arrays = $this->buildHelperArrays();
+            $view->with('projects', $helper_arrays['projects']);
+            $view->with('currency_symbols', $helper_arrays['currency_symbols']);
+            $view->with('fields', array('client_id', 'name', 'invoiced', 'due', 'paid', 'amount', 'currency_id'));
+            $view->with('clients', Client::orderBy('name', 'asc')->get());
+            $view->with('jobs', Job::completed()->notInvoiced()->orderBy('completed', 'desc')->get());
+            $view->with('currencies', Currency::orderBy('name', 'desc')->get());
         });
     }
 

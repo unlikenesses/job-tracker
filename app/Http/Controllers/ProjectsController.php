@@ -26,7 +26,6 @@ class ProjectsController extends Controller
             $clients[$client->id] = $client->name;
         }
         $data = array(
-            'fields'  => array('client_id', 'name'),
             'rows'    => Project::orderBy('name', 'asc')->get(),
             'clients' => $clients
             );
@@ -40,11 +39,7 @@ class ProjectsController extends Controller
      */
     public function create()
     {
-        $data = array(
-            'fields' => array('client_id', 'name'),
-            'clients' => Client::orderBy('name', 'asc')->get()
-            );
-        return view('admin.projects.create', $data);
+        return view('admin.projects.create');
     }
 
     /**
@@ -55,9 +50,7 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
-        $project = new Project;
-        $project->client_id = $request->client_id;
-        $project->name = $request->name;
+        $project = new Project($request->all());
         $project->save();
         return redirect('admin/projects');
     }
@@ -70,12 +63,7 @@ class ProjectsController extends Controller
      */
     public function edit(Project $project)
     {
-        $data = array(
-            'fields'  => array('client_id', 'name'),
-            'row'     => $project,
-            'clients' => Client::orderBy('name', 'asc')->get()
-            );
-        return view('admin.projects.edit', $data);
+        return view('admin.projects.edit', array('row' => $project));
     }
 
     /**
@@ -87,10 +75,7 @@ class ProjectsController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        $project->update([
-            'client_id' => $request->client_id,
-            'name'      => $request->name
-        ]);
+        $project->update($request->all());
         return redirect('admin/projects');
     }
 
@@ -102,10 +87,7 @@ class ProjectsController extends Controller
      */
     public function confirmDelete(Project $project)
     {
-        $data = array(
-            'row' => $project
-            );
-        return view('admin.projects.confirmDelete', $data);
+        return view('admin.projects.confirmDelete', array('row' => $project));
     }
 
     /**
