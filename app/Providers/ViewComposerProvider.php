@@ -6,6 +6,7 @@ use Request;
 use App\Job;
 use App\Bank;
 use App\Client;
+use App\Invoice;
 use App\Project;
 use App\Currency;
 use Illuminate\Support\ServiceProvider;
@@ -19,7 +20,7 @@ class ViewComposerProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->composeUriSegments();
+        $this->composeSidebar();
         $this->composeClientsPages();
         $this->composeProjectsPages();
         $this->composeCurrenciesPages();
@@ -40,12 +41,18 @@ class ViewComposerProvider extends ServiceProvider
         //
     }
 
-    public function composeUriSegments()
+    public function composeSidebar()
     {
         view()->composer('admin.layouts.layout', function($view)
         {
             $view->with('method', Request::segment(2));
             $view->with('argument', Request::segment(3));
+            $view->with('openJobs', Job::open()->count());
+            $view->with('doneNotInvoiced', Job::completed()->notInvoiced()->count());
+            $view->with('allJobs', Job::count());
+            $view->with('overdueInvoices', Invoice::overdue()->count());
+            $view->with('notDueInvoices', Invoice::notDue()->count());
+            $view->with('allInvoices', Invoice::count());
         });
     }
 

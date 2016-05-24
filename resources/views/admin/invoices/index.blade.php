@@ -3,7 +3,7 @@
 @section('content')
     <div class="panel panel-default">
         <div class="panel-heading">
-            Invoices
+            @if (isset($title)) {{ $title }} @endif Invoices
         </div>
 
         <div class="panel-body">

@@ -25,7 +25,8 @@ class InvoicesController extends Controller
     public function index()
     {
         $data = array(
-            'rows' => Invoice::orderBy('name', 'desc')->get()
+            'rows'  => Invoice::orderBy('created_at', 'desc')->get(),
+            'title' => 'All'
             );
         return view('admin.invoices.index', $data);
     }
@@ -33,7 +34,8 @@ class InvoicesController extends Controller
     public function overdue()
     {
         $data = array(
-            'rows' => Invoice::overdue()->orderBy('name', 'desc')->get()
+            'rows'  => Invoice::overdue()->orderBy('name', 'desc')->get(),
+            'title' => 'Overdue'
             );
         return view('admin.invoices.index', $data);
     }
@@ -41,7 +43,8 @@ class InvoicesController extends Controller
     public function not_due()
     {
         $data = array(
-            'rows' => Invoice::notDue()->orderBy('name', 'desc')->get()
+            'rows'  => Invoice::notDue()->orderBy('name', 'desc')->get(),
+            'title' => 'Not Due'
             );
         return view('admin.invoices.index', $data);
     }
