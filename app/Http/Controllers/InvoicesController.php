@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use PDF;
 use App\Job;
+use App\Bank;
 use App\Text;
 use App\Client;
 use App\Invoice;
@@ -211,8 +212,9 @@ class InvoicesController extends Controller
             'client'  => Client::findOrFail($invoice->client_id),
             'jobs'    => Job::inInvoice($invoice->id)->get()
         );
+        $bank = Bank::findOrFail($invoice->bank_id);
         $footer = Text::findOrFail(2);
-        PDF::setOption('footer-html', '<!doctype html><body style="font-family:Arial">' . $footer->body . '</body></html>');
+        PDF::setOption('footer-html', '<!doctype html><body style="font-family:Arial">' . $bank->details . $footer->body . '</body></html>');
         $pdf = PDF::loadView('admin.pdf.invoice', $data);
         return $pdf->download($invoice->name . '.pdf');
     }

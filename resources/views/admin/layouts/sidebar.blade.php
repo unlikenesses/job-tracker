@@ -28,8 +28,7 @@
                     <li><a href="{{ url('admin/currencies') }}">Currencies</a></li>
                     <li><a href="{{ url('admin/banks') }}">Banks</a></li>
                     <li><a href="{{ url('admin/text/1') }}">Invoice Address</a></li>
-                    <li><a href="{{ url('admin/text/2') }}">Invoice Footer (EN)</a></li>
-                    <li><a href="{{ url('admin/text/3') }}">Invoice Footer (DE)</a></li>
+                    <li><a href="{{ url('admin/text/2') }}">Invoice Footer</a></li>
                 </ul>
             </li>
         </ul>
