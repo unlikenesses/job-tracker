@@ -41,7 +41,7 @@ class CurrenciesController extends Controller
     {
         $client = new Currency($request->all());
         $client->save();
-        return redirect('admin/currencies');
+        return redirect('currencies');
     }
 
     /**
@@ -65,7 +65,7 @@ class CurrenciesController extends Controller
     public function update(Request $request, Currency $currency)
     {
         $currency->update($request->all());
-        return redirect('admin/currencies');
+        return redirect('currencies');
     }
 
     /**
@@ -88,6 +88,6 @@ class CurrenciesController extends Controller
     public function destroy(Currency $currency)
     {
         $currency->delete();
-        return redirect('admin/currencies');
+        return redirect('currencies');
     }
 }

@@ -25,27 +25,43 @@ class InvoicesController extends Controller
      */
     public function index()
     {
+        $rows = Invoice::orderBy('created_at', 'desc')->get();
         $data = array(
-            'rows'  => Invoice::orderBy('created_at', 'desc')->get(),
-            'title' => 'All'
+            'rows'   => $rows,
+            'title'  => 'All',
+            'values' => $this->totalValue($rows)
             );
         return view('admin.invoices.index', $data);
     }
 
+    /**
+     * Display a list of overdue invoices.
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function overdue()
     {
+        $rows = Invoice::overdue()->orderBy('name', 'desc')->get();
         $data = array(
-            'rows'  => Invoice::overdue()->orderBy('name', 'desc')->get(),
-            'title' => 'Overdue'
+            'rows'   => $rows,
+            'title'  => 'Overdue',
+            'values' => $this->totalValue($rows)
             );
         return view('admin.invoices.index', $data);
     }
 
+    /**
+     * Display a list of not due invoices.
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function not_due()
     {
+        $rows = Invoice::notDue()->orderBy('name', 'desc')->get();
         $data = array(
-            'rows'  => Invoice::notDue()->orderBy('name', 'desc')->get(),
-            'title' => 'Not Due'
+            'rows'   => $rows,
+            'title'  => 'Not Due',
+            'values' => $this->totalValue($rows)
             );
         return view('admin.invoices.index', $data);
     }
@@ -76,7 +92,7 @@ class InvoicesController extends Controller
         $invoice = new Invoice($request->all());
         $invoice->save();
         $this->updateInvoiceJobs($request, $invoice->id);        
-        return redirect('admin/invoices');
+        return redirect('invoices');
     }
 
     public function updateInvoiceJobs($request, $invoiceId)
@@ -128,7 +144,7 @@ class InvoicesController extends Controller
             }
         }
         $this->updateInvoiceJobs($request, $invoice->id);
-        return redirect('admin/invoices');
+        return redirect('invoices');
     }
 
     /**
@@ -160,7 +176,7 @@ class InvoicesController extends Controller
             ]);
         }
         $invoice->delete();
-        return redirect('admin/invoices');
+        return redirect('invoices');
     }
 
     /**
@@ -204,18 +220,51 @@ class InvoicesController extends Controller
         return $due;
     }
 
+    /**
+     * Export a given invoice as PDF.
+     * 
+     * @param Invoice $invoice 
+     * @return PDF download
+     */
     public function export(Invoice $invoice)
     {
         $data = array(
             'invoice' => $invoice,
             'address' => Text::findOrFail(1),
             'client'  => Client::findOrFail($invoice->client_id),
-            'jobs'    => Job::inInvoice($invoice->id)->get()
+            'jobs'    => Job::inInvoice($invoice->id)->orderBy('completed', 'asc')->get()
         );
         $bank = Bank::findOrFail($invoice->bank_id);
         $footer = Text::findOrFail(2);
         PDF::setOption('footer-html', '<!doctype html><body style="font-family:Arial">' . $bank->details . $footer->body . '</body></html>');
         $pdf = PDF::loadView('admin.pdf.invoice', $data);
         return $pdf->download($invoice->name . '.pdf');
+    }
+
+    /**
+     * Calculate total amount of given array of invoices.
+     * 
+     * @param array $invoices 
+     * @return string
+     */
+    public function totalValue($invoices)
+    {
+        $totals = '';
+        $values = array();
+        $currencies = Currency::get();
+        foreach ($currencies as $currency)
+        {
+            $currencyAmount = 0;
+            foreach ($invoices as $invoice)
+            {
+                if ($invoice->currency_id == $currency->id) $currencyAmount += $invoice->amount;
+            } 
+            $values[$currency->symbol] = $currencyAmount;
+        }       
+        foreach ($values as $symbol => $amount)
+        {
+            if ($amount > 0) $totals .= $symbol . $amount . ', ';
+        }
+        return trim($totals, ', ');
     }
 }

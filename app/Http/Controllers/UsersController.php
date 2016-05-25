@@ -49,7 +49,7 @@ class UsersController extends Controller
         $user->role     = $request->role;
         $user->password = bcrypt($request->password);
         $user->save();
-        return redirect('admin/users');
+        return redirect('users');
     }
 
     /**
@@ -92,7 +92,7 @@ class UsersController extends Controller
         {
             $user->update(['password' => bcrypt($request->password)]);
         }
-        return redirect('admin/profile');
+        return redirect('profile');
     }
 
     /**

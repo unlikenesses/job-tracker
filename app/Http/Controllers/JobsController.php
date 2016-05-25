@@ -21,27 +21,33 @@ class JobsController extends Controller
      */
     public function index()
     {
+        $rows = Job::orderBy('created_at', 'desc')->get();
         $data = array(
-            'rows'  => Job::orderBy('created_at', 'desc')->get(),
-            'title' => 'All'
+            'rows'   => $rows,
+            'title'  => 'All',
+            'values' => $this->totalValue($rows)
             );
         return view('admin.jobs.index', $data);
     }
 
     public function open()
     {
+        $rows = Job::open()->orderBy('created_at', 'desc')->get();
         $data = array(
-            'rows'  => Job::open()->orderBy('created_at', 'desc')->get(),
-            'title' => 'Open'
+            'rows'   => $rows,
+            'title'  => 'Open',
+            'values' => $this->totalValue($rows)
             );
         return view('admin.jobs.index', $data);   
     }
 
     public function completed()
     {
+        $rows = Job::completed()->notInvoiced()->orderBy('created_at', 'desc')->get();
         $data = array(
-            'rows'  => Job::completed()->notInvoiced()->orderBy('created_at', 'desc')->get(),
-            'title' => 'Completed, Not Invoiced'
+            'rows'   => $rows,
+            'title'  => 'Completed, Not Invoiced',
+            'values' => $this->totalValue($rows)
             );
         return view('admin.jobs.index', $data);   
     }
@@ -66,7 +72,7 @@ class JobsController extends Controller
     {
         $job = new Job($request->all());
         $job->save();
-        return redirect('admin/jobs');
+        return redirect('jobs');
     }
 
     /**
@@ -90,7 +96,7 @@ class JobsController extends Controller
     public function update(Request $request, Job $job)
     {
         $job->update($request->all());
-        return redirect('admin/jobs');
+        return redirect('jobs');
     }
 
     /**
@@ -113,6 +119,33 @@ class JobsController extends Controller
     public function destroy(Job $job)
     {
         $job->delete();
-        return redirect('admin/jobs');
+        return redirect('jobs');
+    }
+
+    /**
+     * Calculate total amount of given array of jobs.
+     * 
+     * @param array $jobs 
+     * @return string
+     */
+    public function totalValue($jobs)
+    {
+        $totals = '';
+        $values = array();
+        $currencies = Currency::get();
+        foreach ($currencies as $currency)
+        {
+            $currencyAmount = 0;
+            foreach ($jobs as $job)
+            {
+                if ($job->currency_id == $currency->id) $currencyAmount += $job->amount;
+            } 
+            $values[$currency->symbol] = $currencyAmount;
+        }       
+        foreach ($values as $symbol => $amount)
+        {
+            if ($amount > 0) $totals .= $symbol . $amount . ', ';
+        }
+        return trim($totals, ', ');
     }
 }

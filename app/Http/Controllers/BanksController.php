@@ -41,7 +41,7 @@ class BanksController extends Controller
     {
         $bank = new Bank($request->all());
         $bank->save();
-        return redirect('admin/banks');
+        return redirect('banks');
     }
 
     /**
@@ -65,7 +65,7 @@ class BanksController extends Controller
     public function update(Request $request, Bank $bank)
     {
         $bank->update($request->all());
-        return redirect('admin/banks');
+        return redirect('banks');
     }
 
     /**
@@ -88,6 +88,6 @@ class BanksController extends Controller
     public function destroy(Bank $bank)
     {
         $bank->delete();
-        return redirect('admin/banks');
+        return redirect('banks');
     }
 }

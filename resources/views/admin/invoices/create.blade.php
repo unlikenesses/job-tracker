@@ -6,14 +6,14 @@
             <div class="nav">
                 Create Invoice
                 <div class="pull-right">
-                    <a href="{{ url('admin/invoices') }}" class="btn btn-default">
+                    <a href="{{ url('invoices') }}" class="btn btn-default">
                     <i class="fa fa-chevron-circle-left"></i>&nbsp;&nbsp;Back</a>
                 </div>
             </div>
         </div>
         <div class="panel-body">
 			@include('common.errors')
-	        <form action="{{ url('admin/invoices') }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+	        <form action="{{ url('invoices') }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
 	            {{ csrf_field() }}
 	            @include('admin.invoices.form', ['submitButtonText' => 'Add Invoice'])
 	        </form>

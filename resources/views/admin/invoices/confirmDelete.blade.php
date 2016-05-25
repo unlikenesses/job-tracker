@@ -11,14 +11,14 @@
             </p>
 			<p><strong>Are you sure you want to delete this invoice?</strong></p>
             <p>
-                <form action="{{ url('admin/invoices/' . $row->id) }}" method="POST">
+                <form action="{{ url('invoices/' . $row->id) }}" method="POST">
                     {{ csrf_field() }}
                     {{ method_field('DELETE') }}
                     <button>Delete</button>
                 </form>
             </p>
             <p>
-                <a href="{{ url('admin/invoices' ) }}">Cancel</a>
+                <a href="{{ url('invoices' ) }}">Cancel</a>
             </p>
         </div>
     </div>

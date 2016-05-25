@@ -7,7 +7,7 @@
         </div>
 
         <div class="panel-body">
-			<a href="{{ url('/admin/banks/create') }}" class="btn btn-default">
+			<a href="{{ url('/banks/create') }}" class="btn btn-default">
 	            <i class="fa fa-plus"></i> Add Bank
 	        </a>
 
@@ -29,20 +29,16 @@
 	                        <tr>
 	                        	@foreach ($fields as $field)
 									<td class="table-text">
-										<div>
-											<a href="{{ url('/admin/banks/'.$row->id.'/edit') }}">
-												{{ $row->$field }}
-											</a>
-										</div>
+										<a href="{{ url('/banks/'.$row->id.'/edit') }}">
+											{{ strip_tags($row->$field) }}
+										</a>
 									</td>
 	                        	@endforeach
 	                            <td>
-	                            	<a href="{{ url('/admin/banks/'.$row->id.'/edit') }}" class="btn btn-default">
+	                            	<a href="{{ url('/banks/'.$row->id.'/edit') }}" class="btn btn-default">
 							            <i class="fa fa-plus"></i> Edit
 							        </a>
-	                            </td>
-	                            <td>
-	                                <a href="{{ url('admin/banks/' . $row->id . '/delete') }}" class="btn btn-default"><i class="fa fa-trash"></i> Delete</a>
+	                                <a href="{{ url('banks/' . $row->id . '/delete') }}" class="btn btn-default"><i class="fa fa-trash"></i> Delete</a>
 	                            </td>
 	                        </tr>
 	                    @endforeach

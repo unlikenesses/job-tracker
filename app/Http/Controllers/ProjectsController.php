@@ -52,7 +52,7 @@ class ProjectsController extends Controller
     {
         $project = new Project($request->all());
         $project->save();
-        return redirect('admin/projects');
+        return redirect('projects');
     }
 
     /**
@@ -76,7 +76,7 @@ class ProjectsController extends Controller
     public function update(Request $request, Project $project)
     {
         $project->update($request->all());
-        return redirect('admin/projects');
+        return redirect('projects');
     }
 
     /**
@@ -99,6 +99,6 @@ class ProjectsController extends Controller
     public function destroy(Project $project)
     {
         $project->delete();
-        return redirect('admin/projects');
+        return redirect('projects');
     }
 }

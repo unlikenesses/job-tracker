@@ -4,11 +4,7 @@ Route::group(['middleware' => 'web'], function() {
     
     Route::auth();
 
-    Route::get('/', 'HomeController@index');
-    Route::get('about-us', 'HomeController@about_us');
-
-    Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
-
+    Route::group(['middleware' => 'auth'], function() {
 
         Route::get('/', 'AdminController@index');
 
@@ -69,10 +65,6 @@ Route::group(['middleware' => 'web'], function() {
         Route::patch('banks/{bank}', 'BanksController@update');
         Route::get('banks/{bank}/delete', 'BanksController@confirmDelete');
         Route::delete('banks/{bank}', 'BanksController@destroy');
-
-        Route::get('users', 'UsersController@index');
-        Route::get('users/create', 'UsersController@create');
-        Route::post('users', 'UsersController@store');
 
         Route::get('profile', 'UsersController@editProfile');
         Route::patch('profile', 'UsersController@updateProfile');

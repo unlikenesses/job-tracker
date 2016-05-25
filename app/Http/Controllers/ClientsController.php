@@ -41,7 +41,7 @@ class ClientsController extends Controller
     {
         $client = new Client($request->all());
         $client->save();
-        return redirect('admin/clients');
+        return redirect('clients');
     }
 
     /**
@@ -65,7 +65,7 @@ class ClientsController extends Controller
     public function update(Request $request, Client $client)
     {
         $client->update($request->all());
-        return redirect('admin/clients');
+        return redirect('clients');
     }
 
     /**
@@ -88,6 +88,6 @@ class ClientsController extends Controller
     public function destroy(Client $client)
     {
         $client->delete();
-        return redirect('admin/clients');
+        return redirect('clients');
     }
 }

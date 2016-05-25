@@ -45,8 +45,8 @@ class ViewComposerProvider extends ServiceProvider
     {
         view()->composer('admin.layouts.layout', function($view)
         {
-            $view->with('method', Request::segment(2));
-            $view->with('argument', Request::segment(3));
+            $view->with('method', Request::segment(1));
+            $view->with('argument', Request::segment(2));
             $view->with('openJobs', Job::open()->count());
             $view->with('doneNotInvoiced', Job::completed()->notInvoiced()->count());
             $view->with('allJobs', Job::count());

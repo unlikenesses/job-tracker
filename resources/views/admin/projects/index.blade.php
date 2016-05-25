@@ -7,7 +7,7 @@
         </div>
 
         <div class="panel-body">
-			<a href="{{ url('/admin/projects/create') }}" class="btn btn-default">
+			<a href="{{ url('/projects/create') }}" class="btn btn-default">
 	            <i class="fa fa-plus"></i> Add Project
 	        </a>
 
@@ -29,7 +29,7 @@
 	                        <tr>
 	                        	@foreach ($fields as $field)
 									<td class="table-text">
-										<a href="{{ url('/admin/projects/'.$row->id.'/edit') }}">
+										<a href="{{ url('/projects/'.$row->id.'/edit') }}">
 											@if ($field == 'client_id')
 												{{ $clients[$row->$field] }}
 											@else
@@ -39,12 +39,10 @@
 									</td>
 	                        	@endforeach
 	                            <td>
-	                            	<a href="{{ url('/admin/projects/'.$row->id.'/edit') }}" class="btn btn-default">
+	                            	<a href="{{ url('/projects/'.$row->id.'/edit') }}" class="btn btn-default">
 							            <i class="fa fa-plus"></i> Edit
 							        </a>
-	                            </td>
-	                            <td>
-	                                <a href="{{ url('admin/projects/' . $row->id . '/delete') }}" class="btn btn-default"><i class="fa fa-trash"></i> Delete</a>
+	                                <a href="{{ url('projects/' . $row->id . '/delete') }}" class="btn btn-default"><i class="fa fa-trash"></i> Delete</a>
 	                            </td>
 	                        </tr>
 	                    @endforeach

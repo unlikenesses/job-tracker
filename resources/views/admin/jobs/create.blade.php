@@ -6,14 +6,14 @@
             <div class="nav">
                 Create Job
                 <div class="pull-right">
-                    <a href="{{ url('admin/jobs') }}" class="btn btn-default">
+                    <a href="{{ url('jobs') }}" class="btn btn-default">
                     <i class="fa fa-chevron-circle-left"></i>&nbsp;&nbsp;Back</a>
                 </div>
             </div>
         </div>
         <div class="panel-body">
 			@include('common.errors')
-	        <form action="{{ url('admin/jobs') }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+	        <form action="{{ url('jobs') }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
 	            {{ csrf_field() }}
 	            @include('admin.jobs.form', ['submitButtonText' => 'Add Job'])
 	        </form>

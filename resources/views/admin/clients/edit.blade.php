@@ -6,14 +6,14 @@
             <div class="nav">
                 Edit Client
                 <div class="pull-right">
-                    <a href="{{ url('admin/clients') }}" class="btn btn-default">
+                    <a href="{{ url('clients') }}" class="btn btn-default">
                     <i class="fa fa-chevron-circle-left"></i>&nbsp;&nbsp;Back</a>
                 </div>
             </div>
         </div>
         <div class="panel-body">
 			@include('common.errors')
-	        <form action="{{ url('admin/clients/' . $row->id) }}" enctype="multipart/form-data" method="POST" class="form-horizontal">
+	        <form action="{{ url('clients/' . $row->id) }}" enctype="multipart/form-data" method="POST" class="form-horizontal">
 	            {{ csrf_field() }}
 				{{ method_field('PATCH') }}
 				@include('admin.clients.form', ['submitButtonText' => 'Update Client'])

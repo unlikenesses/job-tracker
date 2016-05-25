@@ -7,7 +7,7 @@
         </div>
 
         <div class="panel-body">
-			<form action="{{ url('admin/text/' . $text->id) }}" method="POST">
+			<form action="{{ url('text/' . $text->id) }}" method="POST">
 		        {{ csrf_field() }}
 				{{ method_field('PATCH') }}
 				<div class="form-group">

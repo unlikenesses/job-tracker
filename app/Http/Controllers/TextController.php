@@ -32,6 +32,6 @@ class TextController extends Controller
     public function update(Request $request, Text $text)
     {
         $text->update($request->all());
-        return redirect('admin/text/' . $text->id);
+        return redirect('text/' . $text->id);
     }
 }
