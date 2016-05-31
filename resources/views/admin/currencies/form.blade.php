@@ -5,7 +5,7 @@
         </label>
 
         <div class="col-sm-6">
-            <input type="text" name="{{ $field }}" class="form-control" value="{{ $row->$field or '' }}">
+            <input type="text" name="{{ $field }}" class="form-control" value="{{ $row->$field or old($field) }}">
         </div>
     </div>
 @endforeach

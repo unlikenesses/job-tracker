@@ -39,6 +39,9 @@ class ClientsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
         $client = new Client($request->all());
         $client->save();
         return redirect('clients');
@@ -64,14 +67,17 @@ class ClientsController extends Controller
      */
     public function update(Request $request, Client $client)
     {
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
         $client->update($request->all());
         return redirect('clients');
     }
 
     /**
      * Show a confirm delete message.
-     * 
-     * @param int $id 
+     *
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function confirmDelete(Client $client)

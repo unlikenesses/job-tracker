@@ -146,20 +146,17 @@ class ViewComposerProvider extends ServiceProvider
     {
         $clients_full = Client::orderBy('name', 'asc')->get();
         $clients = array();
-        foreach ($clients_full as $client)
-        {
+        foreach ($clients_full as $client) {
             $clients[$client->id] = $client->name;
         }
         $projects_full = Project::orderBy('name', 'asc')->get();
         $projects = array();
-        foreach ($projects_full as $project)
-        {
+        foreach ($projects_full as $project) {
             $projects[$project->id] = $project->name;
         }
         $currencies_full = Currency::orderBy('name', 'desc')->get();
         $currency_symbols = array();
-        foreach ($currencies_full as $currency)
-        {
+        foreach ($currencies_full as $currency) {
             $currency_symbols[$currency->id] = $currency->symbol;
         }
         return array(

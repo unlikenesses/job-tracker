@@ -38,7 +38,7 @@ class JobsController extends Controller
             'title'  => 'Open',
             'values' => $this->totalValue($rows)
             );
-        return view('admin.jobs.index', $data);   
+        return view('admin.jobs.index', $data);
     }
 
     public function completed()
@@ -49,7 +49,7 @@ class JobsController extends Controller
             'title'  => 'Completed, Not Invoiced',
             'values' => $this->totalValue($rows)
             );
-        return view('admin.jobs.index', $data);   
+        return view('admin.jobs.index', $data);
     }
 
     /**
@@ -70,6 +70,12 @@ class JobsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'name'      => 'required',
+            'started'   => 'required|date',
+            'completed' => 'date',
+            'amount'    => 'numeric'
+        ]);
         $job = new Job($request->all());
         $job->save();
         return redirect('jobs');
@@ -95,14 +101,20 @@ class JobsController extends Controller
      */
     public function update(Request $request, Job $job)
     {
+        $this->validate($request, [
+            'name'      => 'required',
+            'started'   => 'required|date',
+            'completed' => 'date',
+            'amount'    => 'numeric'
+        ]);
         $job->update($request->all());
         return redirect('jobs');
     }
 
     /**
      * Show a confirm delete message.
-     * 
-     * @param int $id 
+     *
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function confirmDelete(Job $job)
@@ -124,8 +136,8 @@ class JobsController extends Controller
 
     /**
      * Calculate total amount of given array of jobs.
-     * 
-     * @param array $jobs 
+     *
+     * @param array $jobs
      * @return string
      */
     public function totalValue($jobs)
@@ -133,17 +145,14 @@ class JobsController extends Controller
         $totals = '';
         $values = array();
         $currencies = Currency::get();
-        foreach ($currencies as $currency)
-        {
+        foreach ($currencies as $currency) {
             $currencyAmount = 0;
-            foreach ($jobs as $job)
-            {
+            foreach ($jobs as $job) {
                 if ($job->currency_id == $currency->id) $currencyAmount += $job->amount;
-            } 
+            }
             $values[$currency->symbol] = $currencyAmount;
-        }       
-        foreach ($values as $symbol => $amount)
-        {
+        }
+        foreach ($values as $symbol => $amount) {
             if ($amount > 0) $totals .= $symbol . $amount . ', ';
         }
         return trim($totals, ', ');

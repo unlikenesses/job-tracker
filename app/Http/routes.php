@@ -6,9 +6,7 @@ Route::group(['middleware' => 'web'], function() {
 
     Route::group(['middleware' => 'auth'], function() {
 
-        Route::get('/', 'AdminController@index');
-
-        Route::post('sort', 'AdminController@sort');
+        Route::get('/', 'JobsController@open');
 
         Route::get('text/{text}', 'TextController@edit');
         Route::patch('text/{text}', 'TextController@update');

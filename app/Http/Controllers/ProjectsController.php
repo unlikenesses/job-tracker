@@ -21,8 +21,7 @@ class ProjectsController extends Controller
     {
         $clients_full = Client::orderBy('name', 'asc')->get();
         $clients = array();
-        foreach ($clients_full as $client)
-        {
+        foreach ($clients_full as $client) {
             $clients[$client->id] = $client->name;
         }
         $data = array(
@@ -50,6 +49,9 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
         $project = new Project($request->all());
         $project->save();
         return redirect('projects');
@@ -75,14 +77,17 @@ class ProjectsController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
         $project->update($request->all());
         return redirect('projects');
     }
 
     /**
      * Show a confirm delete message.
-     * 
-     * @param int $id 
+     *
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function confirmDelete(Project $project)

@@ -16,23 +16,9 @@ $(function() {
         $('input[name=amount]').val(new_total);
     });
 
-});
+    $('a.invertJobs').on('click', function(e) {
+        e.preventDefault();
+        $('input[name="jobs[]"').trigger('click');
+    });
 
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
-
-var el = document.getElementById('sortable');
-var sortable = Sortable.create(el,{
-    animation: 500,
-    store: {
-        get: function(sortable) {return [];},
-        set: function(sortable) {
-            var order = sortable.toArray();
-            var table = $('thead').attr('id');
-            $.post('sort', { order: order, table: table });
-        }
-    }
 });

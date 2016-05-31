@@ -3,6 +3,7 @@
         Jobs
     </label>
     <div class="col-sm-6">
+    <p><a href="#" class="invertJobs">Invert All</a></p>
     @if (isset($invoice_jobs))
         @foreach ($invoice_jobs as $job)
             <input type="checkbox" name="jobs[]" id="amount{{ $job->amount }}" value="{{ $job->id }}" class="jobs_checkboxes" checked> {{ $projects[$job->project_id] . ': ' . $job->name . '(' . $currency_symbols[$job->currency_id] . $job->amount . ')' }} <br>
@@ -66,7 +67,7 @@
 
             @else
 
-                <input type="text" name="{{ $field }}" class="form-control @if ($field == 'paid') {{ 'datepicker' }} @endif" value="{{ $row->$field or '' }}">
+                <input type="text" name="{{ $field }}" class="form-control @if ($field == 'paid') {{ 'datepicker' }} @endif" value="{{ $row->$field or old($field) }}">
 
             @endif
         </div>

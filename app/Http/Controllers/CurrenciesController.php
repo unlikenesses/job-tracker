@@ -39,6 +39,9 @@ class CurrenciesController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
         $client = new Currency($request->all());
         $client->save();
         return redirect('currencies');
@@ -64,14 +67,17 @@ class CurrenciesController extends Controller
      */
     public function update(Request $request, Currency $currency)
     {
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
         $currency->update($request->all());
         return redirect('currencies');
     }
 
     /**
      * Show a confirm delete message.
-     * 
-     * @param int $id 
+     *
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function confirmDelete(Currency $currency)

@@ -16,7 +16,7 @@
                         </option>
                     @endforeach
                 </select>
-            
+
             @elseif ($field == 'project_id')
 
                 <select name="{{ $field }}" class="form-control">
@@ -39,7 +39,7 @@
 
             @else
 
-                <input type="text" name="{{ $field }}" class="form-control @if ($field == 'started' || $field == 'completed') {{ 'datepicker' }} @endif" value="{{ $row->$field or '' }}">
+                <input type="text" name="{{ $field }}" class="form-control @if ($field == 'started' || $field == 'completed') {{ 'datepicker' }} @endif" value="{{ $row->$field or old($field) }}">
 
             @endif
         </div>

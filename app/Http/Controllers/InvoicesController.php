@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use PDF;
 use App\Job;
 use App\Bank;
@@ -36,7 +35,7 @@ class InvoicesController extends Controller
 
     /**
      * Display a list of overdue invoices.
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function overdue()
@@ -52,7 +51,7 @@ class InvoicesController extends Controller
 
     /**
      * Display a list of not due invoices.
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function not_due()
@@ -74,9 +73,9 @@ class InvoicesController extends Controller
     public function create()
     {
         $data = array(
-            'new_invoice_number' => $this->new_number(),
+            'new_invoice_number' => $this->newNumber(),
             'invoiced'           => date('d-m-Y'),
-            'due'                => $this->due_date()
+            'due'                => $this->dueDate()
             );
         return view('admin.invoices.create', $data);
     }
@@ -89,16 +88,23 @@ class InvoicesController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'name'      => 'required',
+            'invoiced'  => 'required|date',
+            'due'       => 'required|date',
+            'amount'    => 'numeric'
+        ]);
         $invoice = new Invoice($request->all());
         $invoice->save();
-        $this->updateInvoiceJobs($request, $invoice->id);        
+        if ($request->jobs) {
+            $this->updateInvoiceJobs($request, $invoice->id);
+        }
         return redirect('invoices');
     }
 
     public function updateInvoiceJobs($request, $invoiceId)
     {
-        foreach ($request->jobs as $jobId)
-        {
+        foreach ($request->jobs as $jobId) {
             $job = Job::findOrFail($jobId);
             $job->update([
                 'invoiced'   => date('Y-m-d', strtotime($request->invoiced)),
@@ -114,7 +120,7 @@ class InvoicesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Invoice $invoice)
-    {   
+    {
         $data = array(
             'invoice_jobs' => Job::inInvoice($invoice->id)->get(),
             'row'          => $invoice
@@ -131,26 +137,32 @@ class InvoicesController extends Controller
      */
     public function update(Request $request, Invoice $invoice)
     {
-        $invoice->update($request->all());
+        $this->validate($request, [
+            'name'      => 'required',
+            'invoiced'  => 'required|date',
+            'due'       => 'required|date',
+            'amount'    => 'numeric'
+        ]);
         $previousJobs = Job::inInvoice($invoice->id)->get();
-        foreach ($previousJobs as $job)
-        {
-            if ( ! in_array($job->id, $request->jobs))
-            {
+        $invoice->update($request->all());
+        foreach ($previousJobs as $job) {
+            if ($request->jobs == null || ! in_array($job->id, $request->jobs)) {
                 $job->update([
-                    'invoiced'   => NULL,
-                    'invoice_id' => NULL
+                    'invoiced'   => null,
+                    'invoice_id' => null
                 ]);
             }
         }
-        $this->updateInvoiceJobs($request, $invoice->id);
+        if ($request->jobs) {
+            $this->updateInvoiceJobs($request, $invoice->id);
+        }
         return redirect('invoices');
     }
 
     /**
      * Show a confirm delete message.
-     * 
-     * @param int $id 
+     *
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function confirmDelete(Invoice $invoice)
@@ -168,11 +180,10 @@ class InvoicesController extends Controller
     {
         // Update relevant jobs:
         $previousJobs = Job::inInvoice($invoice->id)->get();
-        foreach ($previousJobs as $job)
-        {
+        foreach ($previousJobs as $job) {
             $job->update([
-                'invoiced'   => NULL,
-                'invoice_id' => NULL
+                'invoiced'   => null,
+                'invoice_id' => null
             ]);
         }
         $invoice->delete();
@@ -181,26 +192,22 @@ class InvoicesController extends Controller
 
     /**
      * Return a new invoice number.
-     * 
+     *
      * @return string
      */
-    public function new_number()
+    public function newNumber()
     {
         $invoice_year = '';
         $invoice_number = 0;
         $current_year = date('Y');
         $invoice = Invoice::where('name', 'LIKE', "%$current_year%")->orderBy('name', 'desc')->first();
-        if ($invoice)
-        {
+        if ($invoice) {
             list($invoice_year, $invoice_number) = explode('-', $invoice->name);
-        } 
-        if ($invoice_year == $current_year)
-        {
+        }
+        if ($invoice_year == $current_year) {
             $new_invoice_year = $invoice_year;
             $new_invoice_number = sprintf('%03d', (intval($invoice_number) + 1));
-        }
-        else
-        {
+        } else {
             $new_invoice_year = $current_year;
             $new_invoice_number = '001';
         }
@@ -209,21 +216,25 @@ class InvoicesController extends Controller
 
     /**
      * Calculate the due date of an invoice.
-     * 
+     *
      * @return string
      */
-    public function due_date()
+    public function dueDate()
     {
         $due = date('d-m-Y', strtotime('+30 days'));
-        if (date('N', strtotime('+30 days')) == 6) $due = date('d-m-Y', strtotime('+32 days'));
-        if (date('N', strtotime('+30 days')) == 7) $due = date('d-m-Y', strtotime('+31 days'));
+        if (date('N', strtotime('+30 days')) == 6) {
+            $due = date('d-m-Y', strtotime('+32 days'));
+        }
+        if (date('N', strtotime('+30 days')) == 7) {
+            $due = date('d-m-Y', strtotime('+31 days'));
+        }
         return $due;
     }
 
     /**
      * Export a given invoice as PDF.
-     * 
-     * @param Invoice $invoice 
+     *
+     * @param Invoice $invoice
      * @return PDF download
      */
     public function export(Invoice $invoice)
@@ -243,27 +254,28 @@ class InvoicesController extends Controller
 
     /**
      * Calculate total amount of given array of invoices.
-     * 
-     * @param array $invoices 
+     *
+     * @param array $invoices
      * @return string
      */
     public function totalValue($invoices)
     {
         $totals = '';
-        $values = array();
+        $values = [];
         $currencies = Currency::get();
-        foreach ($currencies as $currency)
-        {
+        foreach ($currencies as $currency) {
             $currencyAmount = 0;
-            foreach ($invoices as $invoice)
-            {
-                if ($invoice->currency_id == $currency->id) $currencyAmount += $invoice->amount;
-            } 
+            foreach ($invoices as $invoice) {
+                if ($invoice->currency_id == $currency->id) {
+                    $currencyAmount += $invoice->amount;
+                }
+            }
             $values[$currency->symbol] = $currencyAmount;
-        }       
-        foreach ($values as $symbol => $amount)
-        {
-            if ($amount > 0) $totals .= $symbol . $amount . ', ';
+        }
+        foreach ($values as $symbol => $amount) {
+            if ($amount > 0) {
+                $totals .= $symbol . $amount . ', ';
+            }
         }
         return trim($totals, ', ');
     }

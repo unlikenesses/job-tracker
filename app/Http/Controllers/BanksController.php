@@ -39,6 +39,9 @@ class BanksController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
         $bank = new Bank($request->all());
         $bank->save();
         return redirect('banks');
@@ -64,14 +67,17 @@ class BanksController extends Controller
      */
     public function update(Request $request, Bank $bank)
     {
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
         $bank->update($request->all());
         return redirect('banks');
     }
 
     /**
      * Show a confirm delete message.
-     * 
-     * @param int $id 
+     *
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function confirmDelete(Bank $bank)

@@ -2,6 +2,12 @@
  * Skin: Wombat
  * ------------
  */
+body {
+    font-family: 'Lato';
+}
+.panel-heading {
+  line-height:32px;
+}
 .skin-wombat .main-header .navbar {
   background-color: #2B3643;
 }

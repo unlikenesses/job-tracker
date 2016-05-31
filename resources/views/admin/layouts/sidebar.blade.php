@@ -2,10 +2,10 @@
 <aside class="main-sidebar">
     <section class="sidebar">
         <ul class="sidebar-menu">
-            <li class="treeview @if ($method == 'jobs') {{ 'active' }} @endif">
+            <li class="treeview @if ($method == 'jobs' || $method == '') {{ 'active' }} @endif">
                 <a href="#">Jobs</a>
                 <ul class="treeview-menu">
-                    <li @if ($method == 'jobs' && $argument == 'open') {!! 'class="active"' !!} @endif><a href="{{ url('jobs/open') }}">Open jobs ({{ $openJobs }})</a></li>
+                    <li @if (($method == 'jobs' && $argument == 'open') || $method == '') {!! 'class="active"' !!} @endif><a href="{{ url('jobs/open') }}">Open jobs ({{ $openJobs }})</a></li>
                     <li @if ($method == 'jobs' && $argument == 'completed') {!! 'class="active"' !!} @endif><a href="{{ url('jobs/completed') }}">Done, not invoiced ({{ $doneNotInvoiced }})</a></li>
                     <li @if ($method == 'jobs' && $argument == '') {!! 'class="active"' !!} @endif><a href="{{ url('jobs') }}">All jobs ({{ $allJobs }})</a></li>
                     <li @if ($method == 'jobs' && $argument == 'create') {!! 'class="active"' !!} @endif><a href="{{ url('jobs/create') }}">Add a job</a></li>

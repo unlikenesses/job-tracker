@@ -12,7 +12,6 @@
     <link href="{{ asset('summernote/summernote.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/AdminLTE.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/skin-wombat.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('css/admin.css') }}" rel="stylesheet" type="text/css">
 </head>
 <body class="skin-wombat">
     <div class="wrapper">
@@ -29,7 +28,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="{{ asset('js/jquery-ui/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('summernote/summernote.min.js') }}"></script>
-    <script src="{{ asset('js/Sortable.min.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/admin.js') }}"></script>
 </body>
