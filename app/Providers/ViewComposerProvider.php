@@ -47,12 +47,12 @@ class ViewComposerProvider extends ServiceProvider
         {
             $view->with('method', Request::segment(1));
             $view->with('argument', Request::segment(2));
+            $view->with('allJobs', Job::count());
             $view->with('openJobs', Job::open()->count());
             $view->with('doneNotInvoiced', Job::completed()->notInvoiced()->count());
-            $view->with('allJobs', Job::count());
-            $view->with('overdueInvoices', Invoice::overdue()->count());
-            $view->with('notDueInvoices', Invoice::notDue()->count());
             $view->with('allInvoices', Invoice::count());
+            $view->with('notDueInvoices', Invoice::notDue()->count());
+            $view->with('overdueInvoices', Invoice::overdue()->count());
         });
     }
 
@@ -61,6 +61,7 @@ class ViewComposerProvider extends ServiceProvider
         view()->composer('admin.clients.*', function($view)
         {
             $view->with('fields', array('name', 'address'));
+            $view->with('nomenclature', Client::nomenclature());
         });
     }
 
@@ -69,6 +70,7 @@ class ViewComposerProvider extends ServiceProvider
         view()->composer('admin.projects.*', function($view)
         {
             $view->with('fields', array('client_id', 'name'));
+            $view->with('nomenclature', Project::nomenclature());
         });
         view()->composer(['admin.projects.edit', 'admin.projects.create'], function($view)
         {
@@ -81,6 +83,7 @@ class ViewComposerProvider extends ServiceProvider
         view()->composer('admin.currencies.*', function($view)
         {
             $view->with('fields', array('name', 'symbol'));
+            $view->with('nomenclature', Currency::nomenclature());
         });
     }
 
@@ -89,6 +92,7 @@ class ViewComposerProvider extends ServiceProvider
         view()->composer('admin.banks.*', function($view)
         {
             $view->with('fields', array('name', 'details'));
+            $view->with('nomenclature', Bank::nomenclature());
         });
     }
 
@@ -97,6 +101,7 @@ class ViewComposerProvider extends ServiceProvider
         view()->composer('admin.jobs.index', function($view)
         {
             $helper_arrays = $this->buildHelperArrays();
+            $view->with('nomenclature', Job::nomenclature());
             $view->with('clients', $helper_arrays['clients']);
             $view->with('projects', $helper_arrays['projects']);
             $view->with('currency_symbols', $helper_arrays['currency_symbols']);
@@ -109,6 +114,7 @@ class ViewComposerProvider extends ServiceProvider
         view()->composer('admin.jobs.form', function($view)
         {
             $view->with('fields', array('client_id', 'project_id', 'name', 'started', 'completed', 'amount', 'currency_id'));
+            $view->with('nomenclature', Job::nomenclature());
             $view->with('clients', Client::orderBy('name', 'asc')->get());
             $view->with('projects', Project::orderBy('name', 'asc')->get());
             $view->with('currencies', Currency::orderBy('name', 'desc')->get());
@@ -122,6 +128,7 @@ class ViewComposerProvider extends ServiceProvider
             $helper_arrays = $this->buildHelperArrays();
             $view->with('clients', $helper_arrays['clients']);
             $view->with('projects', $helper_arrays['projects']);
+            $view->with('nomenclature', Invoice::nomenclature());
             $view->with('currency_symbols', $helper_arrays['currency_symbols']);
             $view->with('fields', array('client_id', 'name', 'invoiced', 'due', 'paid', 'amount'));
         });
@@ -133,6 +140,7 @@ class ViewComposerProvider extends ServiceProvider
         {
             $helper_arrays = $this->buildHelperArrays();
             $view->with('projects', $helper_arrays['projects']);
+            $view->with('nomenclature', Invoice::nomenclature());
             $view->with('currency_symbols', $helper_arrays['currency_symbols']);
             $view->with('fields', array('client_id', 'name', 'invoiced', 'due', 'paid', 'amount', 'currency_id', 'bank_id'));
             $view->with('banks', Bank::orderBy('name', 'asc')->get());

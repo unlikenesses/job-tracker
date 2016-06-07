@@ -10,6 +10,14 @@ class Job extends Model
     	'client_id', 'project_id', 'name', 'started', 'completed', 'invoiced', 'invoice_id', 'currency_id', 'amount'
     ];
 
+    public static function nomenclature() {
+        return [
+            'client_id'   => 'Client',
+            'project_id'  => 'Project',
+            'currency_id' => 'Currency'
+        ];
+    }
+
     public function client()
     {
     	return $this->belongsTo(Client::class);

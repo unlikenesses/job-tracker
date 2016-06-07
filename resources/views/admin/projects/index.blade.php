@@ -14,11 +14,16 @@
 		 	@if (count($rows) > 0)
 
 	            <table class="table table-striped task-table">
-
 	                <!-- Table Headings -->
 	                <thead>
 	                    @foreach ($fields as $field)
-	                    	<th>{{ ucfirst(str_replace('_', ' ', $field)) }}</th>
+	                    	<th>
+	                    		@if (array_key_exists($field, $nomenclature))
+	                    			{{ $nomenclature[$field] }}
+	                    		@else
+	                    			{{ ucfirst(str_replace('_', ' ', $field)) }}
+	                    		@endif
+	                    	</th>
 	                    @endforeach
 	                    <th>&nbsp;</th>
 	                </thead>

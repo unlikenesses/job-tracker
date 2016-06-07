@@ -2,7 +2,11 @@
 
     <div class="form-group">
         <label for="{{ $field }}" class="col-sm-3 control-label">
-            {{ ucfirst(str_replace('_', ' ', $field)) }}
+            @if (array_key_exists($field, $nomenclature))
+                {{ $nomenclature[$field] }}
+            @else
+                {{ ucfirst(str_replace('_', ' ', $field)) }}
+            @endif
         </label>
 
         <div class="col-sm-6">
@@ -20,7 +24,7 @@
             @else
 
                 <input type="text" name="{{ $field }}" class="form-control" value="{{ $row->$field or '' }}">
-            
+
             @endif
 
         </div>

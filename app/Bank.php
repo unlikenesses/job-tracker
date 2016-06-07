@@ -9,4 +9,8 @@ class Bank extends Model
     protected $fillable = [
     	'name', 'details'
     ];
+
+    public static function nomenclature() {
+        return [];
+    }
 }

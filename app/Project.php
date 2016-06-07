@@ -10,6 +10,12 @@ class Project extends Model
     	'client_id', 'name'
     ];
 
+    public static function nomenclature() {
+        return [
+            'client_id' => 'Client'
+        ];
+    }
+
     public function client()
     {
     	return $this->belongsTo(Client::class);

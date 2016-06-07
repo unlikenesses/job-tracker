@@ -9,4 +9,8 @@ class Currency extends Model
     protected $fillable = [
     	'name', 'symbol'
     ];
+
+    public static function nomenclature() {
+        return [];
+    }
 }

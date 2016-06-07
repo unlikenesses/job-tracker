@@ -10,6 +10,10 @@ class Client extends Model
     	'name', 'address'
     ];
 
+    public static function nomenclature() {
+        return [];
+    }
+
     public function projects()
     {
     	return $this->hasMany(Project::class);

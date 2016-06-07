@@ -10,6 +10,14 @@ class Invoice extends Model
     	'client_id', 'name', 'invoiced', 'due', 'paid', 'currency_id', 'amount', 'bank_id'
     ];
 
+    public static function nomenclature() {
+        return [
+            'client_id'   => 'Client',
+            'currency_id' => 'Currency',
+            'bank_id'     => 'Bank'
+        ];
+    }
+
     public function client()
     {
     	return $this->belongsTo(Client::class);
