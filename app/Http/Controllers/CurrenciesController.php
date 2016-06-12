@@ -18,7 +18,7 @@ class CurrenciesController extends Controller
      */
     public function index()
     {
-        return view('admin.currencies.index', array('rows' => Currency::orderBy('name', 'asc')->get()));
+        return view('admin.currencies.index', ['rows' => Currency::orderBy('name', 'asc')->get()]);
     }
 
     /**
@@ -39,9 +39,7 @@ class CurrenciesController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required'
-        ]);
+        $this->validate($request, ['name' => 'required']);
         $client = new Currency($request->all());
         $client->save();
         return redirect('currencies');
@@ -55,7 +53,7 @@ class CurrenciesController extends Controller
      */
     public function edit(Currency $currency)
     {
-        return view('admin.currencies.edit', array('row' => $currency));
+        return view('admin.currencies.edit', ['row' => $currency]);
     }
 
     /**
@@ -67,9 +65,7 @@ class CurrenciesController extends Controller
      */
     public function update(Request $request, Currency $currency)
     {
-        $this->validate($request, [
-            'name' => 'required'
-        ]);
+        $this->validate($request, ['name' => 'required']);
         $currency->update($request->all());
         return redirect('currencies');
     }
@@ -82,7 +78,7 @@ class CurrenciesController extends Controller
      */
     public function confirmDelete(Currency $currency)
     {
-        return view('admin.currencies.confirmDelete', array('row' => $currency));
+        return view('admin.currencies.confirmDelete', ['row' => $currency]);
     }
 
     /**

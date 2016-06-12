@@ -25,11 +25,11 @@ class InvoicesController extends Controller
     public function index()
     {
         $rows = Invoice::orderBy('created_at', 'desc')->get();
-        $data = array(
+        $data = [
             'rows'   => $rows,
             'title'  => 'All',
             'values' => $this->totalValue($rows)
-            );
+            ];
         return view('admin.invoices.index', $data);
     }
 
@@ -41,11 +41,11 @@ class InvoicesController extends Controller
     public function overdue()
     {
         $rows = Invoice::overdue()->orderBy('name', 'desc')->get();
-        $data = array(
+        $data = [
             'rows'   => $rows,
             'title'  => 'Overdue',
             'values' => $this->totalValue($rows)
-            );
+            ];
         return view('admin.invoices.index', $data);
     }
 
@@ -57,11 +57,11 @@ class InvoicesController extends Controller
     public function not_due()
     {
         $rows = Invoice::notDue()->orderBy('name', 'desc')->get();
-        $data = array(
+        $data = [
             'rows'   => $rows,
             'title'  => 'Not Due',
             'values' => $this->totalValue($rows)
-            );
+            ];
         return view('admin.invoices.index', $data);
     }
 
@@ -72,11 +72,11 @@ class InvoicesController extends Controller
      */
     public function create()
     {
-        $data = array(
+        $data = [
             'new_invoice_number' => $this->newNumber(),
             'invoiced'           => date('d-m-Y'),
             'due'                => $this->dueDate()
-            );
+            ];
         return view('admin.invoices.create', $data);
     }
 
@@ -102,6 +102,13 @@ class InvoicesController extends Controller
         return redirect('invoices');
     }
 
+    /**
+     * Update the invoice-relevant fields of jobs.
+     *
+     * @param request $request
+     * @param string $invoiceId
+     * @return void
+     */
     public function updateInvoiceJobs($request, $invoiceId)
     {
         foreach ($request->jobs as $jobId) {
@@ -121,10 +128,10 @@ class InvoicesController extends Controller
      */
     public function edit(Invoice $invoice)
     {
-        $data = array(
+        $data = [
             'invoice_jobs' => Job::inInvoice($invoice->id)->get(),
             'row'          => $invoice
-            );
+            ];
         return view('admin.invoices.edit', $data);
     }
 
@@ -167,7 +174,7 @@ class InvoicesController extends Controller
      */
     public function confirmDelete(Invoice $invoice)
     {
-        return view('admin.invoices.confirmDelete', array('row' => $invoice));
+        return view('admin.invoices.confirmDelete', ['row' => $invoice]);
     }
 
     /**
@@ -178,7 +185,6 @@ class InvoicesController extends Controller
      */
     public function destroy(Invoice $invoice)
     {
-        // Update relevant jobs:
         $previousJobs = Job::inInvoice($invoice->id)->get();
         foreach ($previousJobs as $job) {
             $job->update([
@@ -239,12 +245,12 @@ class InvoicesController extends Controller
      */
     public function export(Invoice $invoice)
     {
-        $data = array(
+        $data = [
             'invoice' => $invoice,
             'address' => Text::findOrFail(1),
             'client'  => Client::findOrFail($invoice->client_id),
             'jobs'    => Job::inInvoice($invoice->id)->orderBy('completed', 'asc')->get()
-        );
+            ];
         $bank = Bank::findOrFail($invoice->bank_id);
         $footer = Text::findOrFail(2);
         PDF::setOption('footer-html', '<!doctype html><body style="font-family:Arial">' . $bank->details . $footer->body . '</body></html>');

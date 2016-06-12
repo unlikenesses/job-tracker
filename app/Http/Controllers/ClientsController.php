@@ -18,7 +18,7 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        return view('admin.clients.index', array('rows' => Client::orderBy('name', 'asc')->get()));
+        return view('admin.clients.index', ['rows' => Client::orderBy('name', 'asc')->get()]);
     }
 
     /**
@@ -39,9 +39,7 @@ class ClientsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required'
-        ]);
+        $this->validate($request, ['name' => 'required']);
         $client = new Client($request->all());
         $client->save();
         return redirect('clients');
@@ -55,7 +53,7 @@ class ClientsController extends Controller
      */
     public function edit(Client $client)
     {
-        return view('admin.clients.edit', array('row' => $client));
+        return view('admin.clients.edit', ['row' => $client]);
     }
 
     /**
@@ -67,9 +65,7 @@ class ClientsController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        $this->validate($request, [
-            'name' => 'required'
-        ]);
+        $this->validate($request, ['name' => 'required']);
         $client->update($request->all());
         return redirect('clients');
     }
@@ -82,7 +78,7 @@ class ClientsController extends Controller
      */
     public function confirmDelete(Client $client)
     {
-        return view('admin.clients.confirmDelete', array('row' => $client));
+        return view('admin.clients.confirmDelete', ['row' => $client]);
     }
 
     /**

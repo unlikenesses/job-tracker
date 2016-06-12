@@ -60,7 +60,7 @@ class ViewComposerProvider extends ServiceProvider
     {
         view()->composer('admin.clients.*', function($view)
         {
-            $view->with('fields', array('name', 'address'));
+            $view->with('fields', ['name', 'address']);
             $view->with('nomenclature', Client::nomenclature());
         });
     }
@@ -69,7 +69,7 @@ class ViewComposerProvider extends ServiceProvider
     {
         view()->composer('admin.projects.*', function($view)
         {
-            $view->with('fields', array('client_id', 'name'));
+            $view->with('fields', ['client_id', 'name']);
             $view->with('nomenclature', Project::nomenclature());
         });
         view()->composer(['admin.projects.edit', 'admin.projects.create'], function($view)
@@ -82,7 +82,7 @@ class ViewComposerProvider extends ServiceProvider
     {
         view()->composer('admin.currencies.*', function($view)
         {
-            $view->with('fields', array('name', 'symbol'));
+            $view->with('fields', ['name', 'symbol']);
             $view->with('nomenclature', Currency::nomenclature());
         });
     }
@@ -91,7 +91,7 @@ class ViewComposerProvider extends ServiceProvider
     {
         view()->composer('admin.banks.*', function($view)
         {
-            $view->with('fields', array('name', 'details'));
+            $view->with('fields', ['name', 'details']);
             $view->with('nomenclature', Bank::nomenclature());
         });
     }
@@ -105,7 +105,7 @@ class ViewComposerProvider extends ServiceProvider
             $view->with('clients', $helper_arrays['clients']);
             $view->with('projects', $helper_arrays['projects']);
             $view->with('currency_symbols', $helper_arrays['currency_symbols']);
-            $view->with('fields', array('client_id', 'project_id', 'name', 'started', 'completed', 'amount'));
+            $view->with('fields', ['client_id', 'project_id', 'name', 'started', 'completed', 'amount']);
         });
     }
 
@@ -113,7 +113,7 @@ class ViewComposerProvider extends ServiceProvider
     {
         view()->composer('admin.jobs.form', function($view)
         {
-            $view->with('fields', array('client_id', 'project_id', 'name', 'started', 'completed', 'amount', 'currency_id'));
+            $view->with('fields', ['client_id', 'project_id', 'name', 'started', 'completed', 'amount', 'currency_id']);
             $view->with('nomenclature', Job::nomenclature());
             $view->with('clients', Client::orderBy('name', 'asc')->get());
             $view->with('projects', Project::orderBy('name', 'asc')->get());
@@ -130,7 +130,7 @@ class ViewComposerProvider extends ServiceProvider
             $view->with('projects', $helper_arrays['projects']);
             $view->with('nomenclature', Invoice::nomenclature());
             $view->with('currency_symbols', $helper_arrays['currency_symbols']);
-            $view->with('fields', array('client_id', 'name', 'invoiced', 'due', 'paid', 'amount'));
+            $view->with('fields', ['client_id', 'name', 'invoiced', 'due', 'paid', 'amount']);
         });
     }
 
@@ -142,7 +142,7 @@ class ViewComposerProvider extends ServiceProvider
             $view->with('projects', $helper_arrays['projects']);
             $view->with('nomenclature', Invoice::nomenclature());
             $view->with('currency_symbols', $helper_arrays['currency_symbols']);
-            $view->with('fields', array('client_id', 'name', 'invoiced', 'due', 'paid', 'amount', 'currency_id', 'bank_id'));
+            $view->with('fields', ['client_id', 'name', 'invoiced', 'due', 'paid', 'amount', 'currency_id', 'bank_id']);
             $view->with('banks', Bank::orderBy('name', 'asc')->get());
             $view->with('clients', Client::orderBy('name', 'asc')->get());
             $view->with('jobs', Job::completed()->notInvoiced()->orderBy('completed', 'desc')->get());
@@ -152,25 +152,27 @@ class ViewComposerProvider extends ServiceProvider
 
     public function buildHelperArrays()
     {
+        $clients = $projects = $currency_symbols = [];
+
         $clients_full = Client::orderBy('name', 'asc')->get();
-        $clients = array();
         foreach ($clients_full as $client) {
             $clients[$client->id] = $client->name;
         }
+
         $projects_full = Project::orderBy('name', 'asc')->get();
-        $projects = array();
         foreach ($projects_full as $project) {
             $projects[$project->id] = $project->name;
         }
+
         $currencies_full = Currency::orderBy('name', 'desc')->get();
-        $currency_symbols = array();
         foreach ($currencies_full as $currency) {
             $currency_symbols[$currency->id] = $currency->symbol;
         }
-        return array(
+
+        return [
             'clients'          => $clients,
             'projects'         => $projects,
             'currency_symbols' => $currency_symbols
-        );
+            ];
     }
 }

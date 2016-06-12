@@ -22,33 +22,43 @@ class JobsController extends Controller
     public function index()
     {
         $rows = Job::orderBy('created_at', 'desc')->get();
-        $data = array(
+        $data = [
             'rows'   => $rows,
             'title'  => 'All',
             'values' => $this->totalValue($rows)
-            );
+            ];
         return view('admin.jobs.index', $data);
     }
 
+    /**
+     * Display a list of open jobs.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function open()
     {
         $rows = Job::open()->orderBy('created_at', 'desc')->get();
-        $data = array(
+        $data = [
             'rows'   => $rows,
             'title'  => 'Open',
             'values' => $this->totalValue($rows)
-            );
+            ];
         return view('admin.jobs.index', $data);
     }
 
+    /**
+     * Display a list of completed jobs.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function completed()
     {
         $rows = Job::completed()->notInvoiced()->orderBy('created_at', 'desc')->get();
-        $data = array(
+        $data = [
             'rows'   => $rows,
             'title'  => 'Completed, Not Invoiced',
             'values' => $this->totalValue($rows)
-            );
+            ];
         return view('admin.jobs.index', $data);
     }
 
@@ -89,7 +99,7 @@ class JobsController extends Controller
      */
     public function edit(Job $job)
     {
-        return view('admin.jobs.edit', array('row' => $job));
+        return view('admin.jobs.edit', ['row' => $job]);
     }
 
     /**
@@ -119,7 +129,7 @@ class JobsController extends Controller
      */
     public function confirmDelete(Job $job)
     {
-        return view('admin.jobs.confirmDelete', array('row' => $job));
+        return view('admin.jobs.confirmDelete', ['row' => $job]);
     }
 
     /**

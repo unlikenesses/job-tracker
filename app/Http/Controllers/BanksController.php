@@ -18,7 +18,7 @@ class BanksController extends Controller
      */
     public function index()
     {
-        return view('admin.banks.index', array('rows' => Bank::orderBy('name', 'asc')->get()));
+        return view('admin.banks.index', ['rows' => Bank::orderBy('name', 'asc')->get()]);
     }
 
     /**
@@ -39,9 +39,7 @@ class BanksController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required'
-        ]);
+        $this->validate($request, ['name' => 'required']);
         $bank = new Bank($request->all());
         $bank->save();
         return redirect('banks');
@@ -55,7 +53,7 @@ class BanksController extends Controller
      */
     public function edit(Bank $bank)
     {
-        return view('admin.banks.edit', array('row' => $bank));
+        return view('admin.banks.edit', ['row' => $bank]);
     }
 
     /**
@@ -67,9 +65,7 @@ class BanksController extends Controller
      */
     public function update(Request $request, Bank $bank)
     {
-        $this->validate($request, [
-            'name' => 'required'
-        ]);
+        $this->validate($request, ['name' => 'required']);
         $bank->update($request->all());
         return redirect('banks');
     }
@@ -82,7 +78,7 @@ class BanksController extends Controller
      */
     public function confirmDelete(Bank $bank)
     {
-        return view('admin.banks.confirmDelete', array('row' => $bank));
+        return view('admin.banks.confirmDelete', ['row' => $bank]);
     }
 
     /**

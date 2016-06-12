@@ -19,7 +19,7 @@ class TextController extends Controller
      */
     public function edit($id)
     {
-    	return view('admin.text', array('text' => Text::where('id', $id)->first()));
+    	return view('admin.text', ['text' => Text::where('id', $id)->first()]);
     }
 
     /**

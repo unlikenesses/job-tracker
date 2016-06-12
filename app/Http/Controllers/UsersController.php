@@ -20,9 +20,7 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::where('role', 500)->get();
-        return view('admin.users.index', [
-            'users' => $users
-        ]);
+        return view('admin.users.index', ['users' => $users]);
     }
 
     /**
@@ -54,20 +52,18 @@ class UsersController extends Controller
 
     /**
      * Show the form for editing the logged-in user's profile.
-     * 
+     *
      * @return type
      */
     public function editProfile()
     {
        $user = Auth::user();
-       return view('admin.users.profile', [
-            'user' => $user
-        ]);
+       return view('admin.users.profile', ['user' => $user]);
     }
 
     /**
      * Update the logged-in user's profile.
-     * 
+     *
      * @return type
      */
     public function updateProfile(Request $request)
