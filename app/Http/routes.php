@@ -1,7 +1,7 @@
 <?php
 
 Route::group(['middleware' => 'web'], function() {
-    
+
     Route::auth();
 
     Route::group(['middleware' => 'auth'], function() {
@@ -20,6 +20,7 @@ Route::group(['middleware' => 'web'], function() {
         Route::patch('jobs/{job}', 'JobsController@update');
         Route::get('jobs/{job}/delete', 'JobsController@confirmDelete');
         Route::delete('jobs/{job}', 'JobsController@destroy');
+        Route::post('jobs/search', 'JobsController@search');
 
         Route::get('invoices', 'InvoicesController@index');
         Route::get('invoices/overdue', 'InvoicesController@overdue');

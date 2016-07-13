@@ -7,6 +7,13 @@
         </div>
 
         <div class="panel-body">
+
+			<form action="{{ url('jobs/search') }}" method="post" class="form-inline">
+				{{ csrf_field() }}
+				<input type="text" name="searchTerm" placeholder="Search for a job" class="form-control" value="{{ old('searchTerm') }}" required>
+				<input type="submit" value="Search" class="btn btn-primary">
+			</form>
+
 			<a href="{{ url('/jobs/create') }}" class="btn btn-default">
 	            <i class="fa fa-plus"></i> Add job
 	        </a>

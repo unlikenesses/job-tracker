@@ -21,7 +21,7 @@ class JobsController extends Controller
      */
     public function index()
     {
-        $rows = Job::orderBy('created_at', 'desc')->get();
+        $rows = Job::orderBy('completed', 'desc')->get();
         $data = [
             'rows'   => $rows,
             'title'  => 'All',
@@ -166,5 +166,17 @@ class JobsController extends Controller
             if ($amount > 0) $totals .= $symbol . $amount . ', ';
         }
         return trim($totals, ', ');
+    }
+
+    public function search(Request $request)
+    {
+        $searchTerm = $request->searchTerm;
+        $searchResults = Job::Search($searchTerm)->get();
+        $data = [
+            'rows'   => $searchResults,
+            'title'  => 'Search Results for "' . $searchTerm . '"',
+            'values' => $this->totalValue($searchResults)
+            ];
+        return view('admin.jobs.index', $data);
     }
 }

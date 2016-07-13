@@ -13,7 +13,7 @@
 	<tr>
 		<td valign="top" width="70%" style="line-height:20px">
 			{!! $address->body !!}<br />
-			<strong>{{ $client->name }}</strong><br>
+			<strong>{{ $client->name }}</strong>
 			{!! $client->address !!}
 		</td>
 		<td valign="top" width="30%" style="line-height:25px">
