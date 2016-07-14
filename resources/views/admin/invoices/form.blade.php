@@ -6,11 +6,11 @@
     <p><a href="#" class="invertJobs">Invert All</a></p>
     @if (isset($invoice_jobs))
         @foreach ($invoice_jobs as $job)
-            <input type="checkbox" name="jobs[]" id="amount{{ $job->amount }}" value="{{ $job->id }}" class="jobs_checkboxes" checked> {{ $projects[$job->project_id] . ': ' . $job->name . '(' . $currency_symbols[$job->currency_id] . $job->amount . ')' }} <br>
+            <input type="checkbox" name="jobs[]" id="amount{{ $job->amount }}" value="{{ $job->id }}" class="jobs_checkboxes" checked> {{ $projects[$job->project_id] . ': ' . $job->name . '(' . $currencySymbols[$job->currency_id] . $job->amount . ')' }} <br>
         @endforeach
     @endif
     @foreach ($jobs as $job)
-        <input type="checkbox" name="jobs[]" id="amount{{ $job->amount }}" value="{{ $job->id }}" class="jobs_checkboxes"> {{ $projects[$job->project_id] . ': ' . $job->name . '(' . $currency_symbols[$job->currency_id] . $job->amount . ')' }} <br>
+        <input type="checkbox" name="jobs[]" id="amount{{ $job->amount }}" value="{{ $job->id }}" class="jobs_checkboxes"> {{ $projects[$job->project_id] . ': ' . $job->name . '(' . $currencySymbols[$job->currency_id] . $job->amount . ')' }} <br>
     @endforeach
     </div>
 </div>

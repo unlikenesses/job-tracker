@@ -48,9 +48,14 @@ class Job extends Model
         return $query->whereNull('invoiced');
     }
 
-    public function scopeInInvoice($query, $invoice_id)
+    public function scopeInInvoice($query, $invoiceId)
     {
-        return $query->where('invoice_id', $invoice_id);
+        return $query->where('invoice_id', $invoiceId);
+    }
+
+    public function scopeForClient($query, $clientId)
+    {
+        return $query->where('client_id', $clientId);
     }
 
     public function setStartedAttribute($value)

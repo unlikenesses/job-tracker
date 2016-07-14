@@ -21,6 +21,7 @@ Route::group(['middleware' => 'web'], function() {
         Route::get('jobs/{job}/delete', 'JobsController@confirmDelete');
         Route::delete('jobs/{job}', 'JobsController@destroy');
         Route::post('jobs/search', 'JobsController@search');
+        Route::post('jobs/filter', 'JobsController@filter');
 
         Route::get('invoices', 'InvoicesController@index');
         Route::get('invoices/overdue', 'InvoicesController@overdue');

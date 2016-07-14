@@ -8,11 +8,7 @@
 
         <div class="panel-body">
 
-			<form action="{{ url('jobs/search') }}" method="post" class="form-inline">
-				{{ csrf_field() }}
-				<input type="text" name="searchTerm" placeholder="Search for a job" class="form-control" value="{{ old('searchTerm') }}" required>
-				<input type="submit" value="Search" class="btn btn-primary">
-			</form>
+			@include('admin.jobs.filters')
 
 			<a href="{{ url('/jobs/create') }}" class="btn btn-default">
 	            <i class="fa fa-plus"></i> Add job
@@ -20,7 +16,7 @@
 
 		 	@if (count($rows) > 0)
 
-	            <table class="table table-striped task-table">
+	            <table class="table table-striped task-table" id="jobsTable">
 
 	                <!-- Table Headings -->
 	                <thead>
@@ -44,7 +40,7 @@
 									<td class="table-text">
 										<a href="{{ url('/jobs/' . $row->id . '/edit') }}">
 											@if ($field == 'amount')
-												{{ $currency_symbols[$row->currency_id] }}
+												{{ $currencySymbols[$row->currency_id] }}
 											@endif
 											@if ($field == 'client_id')
 												{{ $clients[$row->$field] }}

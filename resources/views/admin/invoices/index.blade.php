@@ -37,7 +37,7 @@
 									<td class="table-text">
 										<a href="{{ url('/invoices/' . $row->id . '/edit') }}">
 											@if ($field == 'amount')
-												{{ $currency_symbols[$row->currency_id] }}
+												{{ $currencySymbols[$row->currency_id] }}
 											@endif
 											@if ($field == 'client_id')
 												{{ $clients[$row->$field] }}

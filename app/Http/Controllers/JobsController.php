@@ -179,13 +179,35 @@ class JobsController extends Controller
     {
         $searchTerm = $request->searchTerm;
         $searchResults = Job::Search($searchTerm)->get();
-        // echo 'searchTerm = ' . $searchTerm;
-        // echo '<pre>'; print_r($searchResults); echo '</pre>'; die();
         $data = [
             'rows'   => $searchResults,
             'title'  => 'Search Results for "' . $searchTerm . '"',
             'values' => $this->totalValue($searchResults)
             ];
         return view('admin.jobs.index', $data);
+    }
+
+    /**
+     * Return JSON array of jobs for a posted clientId.
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function filter(Request $request)
+    {
+        $rows = Job::forClient($request->clientId)->get();
+        foreach ($rows as $row) {
+            $response[] = [
+                'id'             => $row->id,
+                'client'         => Client::find($row->client_id)->name,
+                'project'        => Project::find($row->project_id)->name,
+                'name'           => $row->name,
+                'started'        => $row->started,
+                'completed'      => $row->completed,
+                'currencySymbol' => Currency::find($row->currency_id)->symbol,
+                'amount'         => $row->amount
+            ];
+        }
+        return response()->json($response);
     }
 }
