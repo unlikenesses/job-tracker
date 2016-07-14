@@ -6,9 +6,9 @@
             Delete Job
         </div>
         <div class="panel-body">
-            <p>
-                {{ $row->name }}
-            </p>
+            <p><strong>Client:</strong> {{ $client }}</p>
+            <p><strong>Project:</strong> {{ $project }}</p>
+            <p><strong>Job:</strong> {{ $row->name }}</p>
 			<p><strong>Are you sure you want to delete this job?</strong></p>
             <p>
                 <form action="{{ url('jobs/' . $row->id) }}" method="POST">

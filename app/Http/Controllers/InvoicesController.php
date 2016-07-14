@@ -174,7 +174,11 @@ class InvoicesController extends Controller
      */
     public function confirmDelete(Invoice $invoice)
     {
-        return view('admin.invoices.confirmDelete', ['row' => $invoice]);
+        $data = [
+            'row'    => $invoice,
+            'client' => Client::find($invoice->client_id)->name,
+        ];
+        return view('admin.invoices.confirmDelete', $data);
     }
 
     /**

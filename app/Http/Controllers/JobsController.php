@@ -129,7 +129,12 @@ class JobsController extends Controller
      */
     public function confirmDelete(Job $job)
     {
-        return view('admin.jobs.confirmDelete', ['row' => $job]);
+        $data = [
+            'row'     => $job,
+            'client'  => Client::find($job->client_id)->name,
+            'project' => Project::find($job->project_id)->name
+        ];
+        return view('admin.jobs.confirmDelete', $data);
     }
 
     /**
