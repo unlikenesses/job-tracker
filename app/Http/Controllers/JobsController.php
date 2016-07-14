@@ -21,7 +21,7 @@ class JobsController extends Controller
      */
     public function index()
     {
-        $rows = Job::orderBy('completed', 'desc')->get();
+        $rows = Job::latest()->get();
         $data = [
             'rows'   => $rows,
             'title'  => 'All',
@@ -37,7 +37,7 @@ class JobsController extends Controller
      */
     public function open()
     {
-        $rows = Job::open()->orderBy('created_at', 'desc')->get();
+        $rows = Job::open()->latest()->get();
         $data = [
             'rows'   => $rows,
             'title'  => 'Open',
@@ -53,7 +53,7 @@ class JobsController extends Controller
      */
     public function completed()
     {
-        $rows = Job::completed()->notInvoiced()->orderBy('created_at', 'desc')->get();
+        $rows = Job::completed()->notInvoiced()->latest()->get();
         $data = [
             'rows'   => $rows,
             'title'  => 'Completed, Not Invoiced',
@@ -153,12 +153,13 @@ class JobsController extends Controller
     public function totalValue($jobs)
     {
         $totals = '';
-        $values = array();
         $currencies = Currency::get();
         foreach ($currencies as $currency) {
             $currencyAmount = 0;
             foreach ($jobs as $job) {
-                if ($job->currency_id == $currency->id) $currencyAmount += $job->amount;
+                if ($job->currency_id == $currency->id) {
+                    $currencyAmount += $job->amount;
+                }
             }
             $values[$currency->symbol] = $currencyAmount;
         }
@@ -168,10 +169,18 @@ class JobsController extends Controller
         return trim($totals, ', ');
     }
 
+    /**
+     * Search jobs for posted keyword.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function search(Request $request)
     {
         $searchTerm = $request->searchTerm;
         $searchResults = Job::Search($searchTerm)->get();
+        // echo 'searchTerm = ' . $searchTerm;
+        // echo '<pre>'; print_r($searchResults); echo '</pre>'; die();
         $data = [
             'rows'   => $searchResults,
             'title'  => 'Search Results for "' . $searchTerm . '"',

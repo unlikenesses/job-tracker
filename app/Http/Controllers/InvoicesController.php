@@ -24,7 +24,7 @@ class InvoicesController extends Controller
      */
     public function index()
     {
-        $rows = Invoice::orderBy('created_at', 'desc')->get();
+        $rows = Invoice::latest()->get();
         $data = [
             'rows'   => $rows,
             'title'  => 'All',
@@ -267,7 +267,6 @@ class InvoicesController extends Controller
     public function totalValue($invoices)
     {
         $totals = '';
-        $values = [];
         $currencies = Currency::get();
         foreach ($currencies as $currency) {
             $currencyAmount = 0;

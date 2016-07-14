@@ -19,14 +19,13 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $clients_full = Client::orderBy('name', 'asc')->get();
-        $clients = array();
-        foreach ($clients_full as $client) {
-            $clients[$client->id] = $client->name;
+        $clients = Client::orderBy('name', 'asc')->get();
+        foreach ($clients as $client) {
+            $client_arr[$client->id] = $client->name;
         }
         $data = [
             'rows'    => Project::orderBy('name', 'asc')->get(),
-            'clients' => $clients
+            'clients' => $client_arr
             ];
         return view('admin.projects.index', $data);
     }

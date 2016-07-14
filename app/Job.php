@@ -73,13 +73,10 @@ class Job extends Model
         return ($value != '') ? date('d-m-Y', strtotime($value)) : NULL;
     }
 
-    /* https://laracasts.com/discuss/channels/laravel/search-option-in-laravel-5/replies/89521 */
     public function scopeSearch($query, $keyword)
     {
         if ($keyword != '') {
-            $query->where(function($query) use ($keyword) {
-                $query->where('name', 'LIKE', '%' . $keyword . '%');
-            });
+            $query->where('projects.name', 'LIKE', '%' . $keyword . '%')->join('projects', 'jobs.project_id', '=', 'projects.id')->orWhere('jobs.name', 'LIKE', '%' . $keyword . '%');
         }
         return $query;
     }
