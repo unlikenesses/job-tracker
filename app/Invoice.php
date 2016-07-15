@@ -38,6 +38,14 @@ class Invoice extends Model
         return $query->whereNotNull('invoiced')->whereNull('paid')->where('due', '>', date('Y-m-d'));
     }
 
+    public function scopeSearch($query, $keyword)
+    {
+        if ($keyword != '') {
+            $query->where('invoices.name', 'LIKE', '%' . $keyword . '%')->orWhere('clients.name', 'LIKE', '%' . $keyword . '%')->join('clients', 'invoices.client_id', '=', 'clients.id');
+        }
+        return $query;
+    }
+
     public function setInvoicedAttribute($value)
     {
         $this->attributes['invoiced'] = date('Y-m-d', strtotime($value));

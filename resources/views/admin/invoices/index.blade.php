@@ -7,6 +7,9 @@
         </div>
 
         <div class="panel-body">
+
+			@include('admin.invoices.filters')
+
 			<a href="{{ url('/invoices/create') }}" class="btn btn-default">
 	            <i class="fa fa-plus"></i> Add Invoice
 	        </a>

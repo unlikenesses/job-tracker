@@ -58,6 +58,14 @@ class Job extends Model
         return $query->where('client_id', $clientId);
     }
 
+    public function scopeSearch($query, $keyword)
+    {
+        if ($keyword != '') {
+            $query->where('projects.name', 'LIKE', '%' . $keyword . '%')->join('projects', 'jobs.project_id', '=', 'projects.id')->orWhere('jobs.name', 'LIKE', '%' . $keyword . '%');
+        }
+        return $query;
+    }
+
     public function setStartedAttribute($value)
     {
         $this->attributes['started'] = date('Y-m-d', strtotime($value));
@@ -76,13 +84,5 @@ class Job extends Model
     public function getCompletedAttribute($value)
     {
         return ($value != '') ? date('d-m-Y', strtotime($value)) : NULL;
-    }
-
-    public function scopeSearch($query, $keyword)
-    {
-        if ($keyword != '') {
-            $query->where('projects.name', 'LIKE', '%' . $keyword . '%')->join('projects', 'jobs.project_id', '=', 'projects.id')->orWhere('jobs.name', 'LIKE', '%' . $keyword . '%');
-        }
-        return $query;
     }
 }

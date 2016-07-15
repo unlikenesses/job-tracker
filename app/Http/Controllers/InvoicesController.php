@@ -288,4 +288,22 @@ class InvoicesController extends Controller
         }
         return trim($totals, ', ');
     }
+
+    /**
+     * Search invoices for posted keyword.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $searchTerm = $request->searchTerm;
+        $searchResults = Invoice::Search($searchTerm)->select(['invoices.*', 'clients.name as clientName'])->get();
+        $data = [
+            'rows'   => $searchResults,
+            'title'  => 'Search Results for "' . $searchTerm . '"',
+            'values' => $this->totalValue($searchResults)
+            ];
+        return view('admin.invoices.index', $data);
+    }
 }

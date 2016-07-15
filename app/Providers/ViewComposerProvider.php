@@ -128,6 +128,7 @@ class ViewComposerProvider extends ServiceProvider
         {
             $helper_arrays = $this->buildHelperArrays();
             $view->with('clients', $helper_arrays['clients']);
+            $view->with('allClients', $helper_arrays['allClients']);
             $view->with('projects', $helper_arrays['projects']);
             $view->with('nomenclature', Invoice::nomenclature());
             $view->with('currencySymbols', $helper_arrays['currencySymbols']);
