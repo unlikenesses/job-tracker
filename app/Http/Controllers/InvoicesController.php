@@ -249,11 +249,20 @@ class InvoicesController extends Controller
      */
     public function export(Invoice $invoice)
     {
+        $jobs = Job::inInvoice($invoice->id)->orderBy('completed', 'asc')->get();
+        foreach ($jobs as $job) {
+            $project = Project::findOrFail($job->project_id);
+            if ($project->name == 'Momentum Various') {
+                $job['fullName'] = $job->name;
+            } else {
+                $job['fullName'] = $project->name . ': ' . $job->name;
+            }
+        }
         $data = [
             'invoice' => $invoice,
             'address' => Text::findOrFail(1),
             'client'  => Client::findOrFail($invoice->client_id),
-            'jobs'    => Job::inInvoice($invoice->id)->orderBy('completed', 'asc')->get()
+            'jobs'    => $jobs
             ];
         $bank = Bank::findOrFail($invoice->bank_id);
         $footer = Text::findOrFail(2);

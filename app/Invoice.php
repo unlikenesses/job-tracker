@@ -41,7 +41,9 @@ class Invoice extends Model
     public function scopeSearch($query, $keyword)
     {
         if ($keyword != '') {
-            $query->where('invoices.name', 'LIKE', '%' . $keyword . '%')->orWhere('clients.name', 'LIKE', '%' . $keyword . '%')->join('clients', 'invoices.client_id', '=', 'clients.id');
+            $query->where('invoices.name', 'LIKE', '%' . $keyword . '%')
+                  ->orWhere('clients.name', 'LIKE', '%' . $keyword . '%')
+                  ->join('clients', 'invoices.client_id', '=', 'clients.id');
         }
         return $query;
     }

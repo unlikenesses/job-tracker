@@ -29,13 +29,13 @@
 		<td><strong>Start</strong></td>
 		<td><strong>Complete</strong></td>
 		<td><strong>Description</strong></td>
-		<td align="right"><strong>Amount ({{ $currency_symbols[$invoice->currency_id] }})</strong></td>
+		<td align="right"><strong>Amount ({{ $currencySymbols[$invoice->currency_id] }})</strong></td>
 	</tr>
 	@foreach ($jobs as $job)
 		<tr>
 			<td>{{ date('d/m/Y', strtotime($job->started)) }}</td>
 			<td>{{ date('d/m/Y', strtotime($job->completed)) }}</td>
-			<td>{{ $job->name }}</td>
+			<td>{{ $job->fullName }}</td>
 			<td align="right">{{ number_format($job->amount, 2) }}</td>
 		</tr>
 	@endforeach
@@ -47,7 +47,7 @@
 					<strong>TOTAL:</strong>
 				</td>
 				<td>
-					<strong>{{ $currency_symbols[$invoice->currency_id] . number_format($invoice->amount, 2) }}</strong>
+					<strong>{{ $currencySymbols[$invoice->currency_id] . number_format($invoice->amount, 2) }}</strong>
 				</td>
 			</tr>
 			</table>

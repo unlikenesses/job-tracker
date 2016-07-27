@@ -13,7 +13,7 @@
     <div class="col-md-3">
 
         <form action="{{ url('jobs/clientFilter') }}" method="post" class="form-inline">
-            <select name="clientFilter" class="form-control">
+            <select name="jobsClientFilter" class="form-control">
                 <option value="0">Filter by client:</option>
                 @foreach ($allClients as $client)
                     <option value="{{ $client->id }}">

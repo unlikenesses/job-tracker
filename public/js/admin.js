@@ -48,10 +48,10 @@ $(function() {
         return str;
     }
 
-    $('select[name="clientFilter"]').change(function() {
+    $('select[name="jobsClientFilter"]').change(function() {
         var clientId = $(this).val();
         var token = $('meta[name="csrf-token"').attr('content');
-        $.post('jobs/filter', {_token: token, clientId: clientId}, function(data) {
+        $.post('/jobs/filter', {_token: token, clientId: clientId}, function(data) {
             $('#jobsTable tbody tr').remove();
             $.each(data, function(index, job) {
                 $('#jobsTable tbody').append(jobRow(job));
