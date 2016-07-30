@@ -315,4 +315,28 @@ class InvoicesController extends Controller
             ];
         return view('admin.invoices.index', $data);
     }
+
+    /**
+     * Return JSON array of invoices for a posted clientId.
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function filter(Request $request)
+    {
+        $rows = Invoice::forClient($request->clientId)->get();
+        foreach ($rows as $row) {
+            $response[] = [
+                'id'             => $row->id,
+                'client'         => Client::find($row->client_id)->name,
+                'name'           => $row->name,
+                'invoiced'       => $row->invoiced,
+                'due'            => $row->due,
+                'paid'           => $row->paid,
+                'currencySymbol' => Currency::find($row->currency_id)->symbol,
+                'amount'         => $row->amount
+            ];
+        }
+        return response()->json($response);
+    }
 }

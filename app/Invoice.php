@@ -52,6 +52,11 @@ class Invoice extends Model
         return $query;
     }
 
+    public function scopeForClient($query, $clientId)
+    {
+        return $query->where('client_id', $clientId);
+    }
+
     public function setInvoicedAttribute($value)
     {
         $this->attributes['invoiced'] = date('Y-m-d', strtotime($value));

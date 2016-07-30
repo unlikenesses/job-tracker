@@ -16,7 +16,7 @@
 
 		 	@if (count($rows) > 0)
 
-	            <table class="table table-striped task-table">
+	            <table class="table table-striped task-table" id="invoicesTable">
 
 	                <!-- Table Headings -->
 	                <thead>
