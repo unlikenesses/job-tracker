@@ -14,6 +14,7 @@
             @if ($field == 'client_id')
 
                 <select name="{{ $field }}" class="form-control">
+                    <option value="0">Please select a client:</option>
                     @foreach ($clients as $client)
                         <option value="{{ $client->id }}" @if (isset($row->$field) && $row->$field == $client->id) {!! 'selected="selected"' !!} @endif>
                             {{ $client->name }}
@@ -24,6 +25,7 @@
             @elseif ($field == 'project_id')
 
                 <select name="{{ $field }}" class="form-control">
+                    <option value="0">Please select a project:</option>
                     @foreach ($projects as $project)
                         <option value="{{ $project->id }}" @if (isset($row->$field) && $row->$field == $project->id) {!! 'selected="selected"' !!} @endif>
                             {{ $project->name }}

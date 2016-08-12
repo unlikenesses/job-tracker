@@ -101,4 +101,16 @@ class ProjectsController extends Controller
         $project->delete();
         return redirect('projects');
     }
+
+    /**
+     * Return JSON string of projects for a given client ID.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getProjectsByClient(Request $request)
+    {
+        $projects = Project::where('client_id', $request->clientId)->orderBy('name', 'asc')->get();
+        return response()->json($projects);
+    }
 }

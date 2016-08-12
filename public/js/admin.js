@@ -104,4 +104,18 @@ $(function() {
         });
     });
 
+    $('select[name="client_id"]').change(function() {
+        var clientId = $(this).val();
+        var token = $('meta[name="csrf-token"').attr('content');
+        $.post('/projects/byClient', {_token: token, clientId: clientId}, function(data) {
+            $('select[name="project_id"]').empty();
+            $.each(data, function(index, project) {
+                var str = '<option value="' + project.id + '">' + project.name + '</option>';
+                $('select[name="project_id"]').append(str);
+            });
+        }).fail(function() {
+            console.log('Failed to fetch data.');
+        });
+    });
+
 });

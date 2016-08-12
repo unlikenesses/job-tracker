@@ -21,7 +21,7 @@ class JobsController extends Controller
      */
     public function index()
     {
-        $rows = Job::latest()->get();
+        $rows = Job::orderBy('completed', 'desc')->get();
         $data = [
             'rows'   => $rows,
             'title'  => 'All',
@@ -196,7 +196,7 @@ class JobsController extends Controller
      * Return JSON array of jobs for a posted clientId.
      *
      * @param Request $request
-     * @return array
+     * @return \Illuminate\Http\Response
      */
     public function filter(Request $request)
     {

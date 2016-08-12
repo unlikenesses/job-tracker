@@ -10,7 +10,6 @@
                 <!-- Authentication Links -->
                 @if (Auth::guest())
                     <li><a href="{{ url('/login') }}">Login</a></li>
-                    {{-- <li><a href="{{ url('/register') }}">Register</a></li> --}}
                 @else
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -22,7 +21,7 @@
                             </li>
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="{{ url('admin/profile') }}"><i class="fa fa-btn fa-user"></i> Edit Profile</a>
+                                    <a href="{{ url('/profile') }}"><i class="fa fa-btn fa-user"></i> Edit Profile</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i> Logout</a>

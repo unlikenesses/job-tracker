@@ -266,7 +266,8 @@ class InvoicesController extends Controller
             ];
         $bank = Bank::findOrFail($invoice->bank_id);
         $footer = Text::findOrFail(2);
-        PDF::setOption('footer-html', '<!doctype html><body style="font-family:Arial">' . $bank->details . $footer->body . '</body></html>');
+        $footerStr = '<!doctype html><body style="font-family:Arial">' . $bank->details . $footer->body . '</body></html>';
+        PDF::setOption('footer-html', $footerStr);
         $pdf = PDF::loadView('admin.pdf.invoice', $data);
         return $pdf->download($invoice->name . '.pdf');
     }

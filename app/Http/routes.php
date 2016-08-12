@@ -51,6 +51,7 @@ Route::group(['middleware' => 'web'], function() {
         Route::patch('projects/{project}', 'ProjectsController@update');
         Route::get('projects/{project}/delete', 'ProjectsController@confirmDelete');
         Route::delete('projects/{project}', 'ProjectsController@destroy');
+        Route::post('projects/byClient', 'ProjectsController@getProjectsByClient');
 
         Route::get('currencies', 'CurrenciesController@index');
         Route::get('currencies/create', 'CurrenciesController@create');
