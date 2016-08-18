@@ -3,7 +3,7 @@
 @section('content')
     <div class="panel panel-default">
         <div class="panel-heading">
-            @if (isset($title)) {{ $title }} @endif Jobs ({{ $values }})
+            @if (isset($title)) {{ $title }} @endif Jobs ({{ $values }}) - Page {{ $rows->currentPage() }} of {{ $rows->lastPage() }}
         </div>
 
         <div class="panel-body">
@@ -54,7 +54,7 @@
 	                        	@endforeach
 	                            <td>
 	                            	<a href="{{ url('/jobs/'.$row->id.'/edit') }}" class="btn btn-default">
-							            <i class="fa fa-plus"></i> Edit
+							            <i class="fa fa-edit"></i> Edit
 							        </a>
 	                                <a href="{{ url('jobs/' . $row->id . '/delete') }}" class="btn btn-default"><i class="fa fa-trash"></i> Delete</a>
 	                            </td>
@@ -67,4 +67,5 @@
 	        @endif
         </div>
     </div>
+    {{ $rows->links() }}
 @endsection

@@ -36,7 +36,7 @@
 	                        	@endforeach
 	                            <td>
 	                            	<a href="{{ url('/currencies/'.$row->id.'/edit') }}" class="btn btn-default">
-							            <i class="fa fa-plus"></i> Edit
+							            <i class="fa fa-edit"></i> Edit
 							        </a>
 	                                <a href="{{ url('currencies/' . $row->id . '/delete') }}" class="btn btn-default"><i class="fa fa-trash"></i> Delete</a>
 	                            </td>

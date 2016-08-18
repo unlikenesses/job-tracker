@@ -21,11 +21,12 @@ class JobsController extends Controller
      */
     public function index()
     {
-        $rows = Job::orderBy('completed', 'desc')->get();
+        $allRows = Job::orderBy('completed', 'desc')->get();
+        $rows = Job::orderBy('completed', 'desc')->paginate(10);
         $data = [
             'rows'   => $rows,
             'title'  => 'All',
-            'values' => $this->totalValue($rows)
+            'values' => $this->totalValue($allRows)
             ];
         return view('admin.jobs.index', $data);
     }
@@ -37,11 +38,12 @@ class JobsController extends Controller
      */
     public function open()
     {
-        $rows = Job::open()->latest()->get();
+        $allRows = Job::open()->latest()->get();
+        $rows = Job::open()->latest()->paginate(10);
         $data = [
             'rows'   => $rows,
             'title'  => 'Open',
-            'values' => $this->totalValue($rows)
+            'values' => $this->totalValue($allRows)
             ];
         return view('admin.jobs.index', $data);
     }
@@ -53,11 +55,12 @@ class JobsController extends Controller
      */
     public function completed()
     {
-        $rows = Job::completed()->notInvoiced()->latest()->get();
+        $allRows = Job::completed()->notInvoiced()->latest()->get();
+        $rows = Job::completed()->notInvoiced()->latest()->paginate(10);
         $data = [
             'rows'   => $rows,
             'title'  => 'Completed, Not Invoiced',
-            'values' => $this->totalValue($rows)
+            'values' => $this->totalValue($allRows)
             ];
         return view('admin.jobs.index', $data);
     }
@@ -183,7 +186,8 @@ class JobsController extends Controller
     public function search(Request $request)
     {
         $searchTerm = $request->searchTerm;
-        $searchResults = Job::Search($searchTerm)->get();
+        // $searchResults = Job::Search($searchTerm)->get();
+        $searchResults = Job::Search($searchTerm)->paginate(10);
         $data = [
             'rows'   => $searchResults,
             'title'  => 'Search Results for "' . $searchTerm . '"',

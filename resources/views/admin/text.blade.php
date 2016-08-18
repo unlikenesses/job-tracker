@@ -17,9 +17,9 @@
 
 				<div class="form-group">
 			        <button type="submit" class="btn btn-default">
-			            <i class="fa fa-plus"></i> Update Text
+			            Update Text
 			        </button>
-				</div>           
+				</div>
 		    </form>
 		</div>
 	</div>
