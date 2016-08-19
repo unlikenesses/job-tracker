@@ -61,7 +61,9 @@ class Job extends Model
     public function scopeSearch($query, $keyword)
     {
         if ($keyword != '') {
-            $query->where('projects.name', 'LIKE', '%' . $keyword . '%')->join('projects', 'jobs.project_id', '=', 'projects.id')->orWhere('jobs.name', 'LIKE', '%' . $keyword . '%');
+            $query->where('projects.name', 'LIKE', '%' . $keyword . '%')
+                  ->orWhere('jobs.name', 'LIKE', '%' . $keyword . '%')
+                  ->join('projects', 'jobs.project_id', '=', 'projects.id');
         }
         return $query;
     }

@@ -2,8 +2,7 @@
 
     <div class="col-md-4">
 
-        <form action="{{ url('jobs/search') }}" method="post" class="form-inline">
-            {{ csrf_field() }}
+        <form action="{{ url('jobs/search') }}" method="get" class="form-inline">
             <input type="text" name="searchTerm" placeholder="Search for a job" class="form-control" value="{{ old('searchTerm') }}" required>
             <input type="submit" value="Search" class="btn btn-primary">
         </form>

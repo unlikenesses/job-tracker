@@ -21,8 +21,9 @@ class JobsController extends Controller
      */
     public function index()
     {
-        $allRows = Job::orderBy('completed', 'desc')->get();
-        $rows = Job::orderBy('completed', 'desc')->paginate(10);
+        // Ordering hints from http://stackoverflow.com/a/31711803
+        $allRows = Job::orderBy(\DB::raw('-completed'), 'asc')->get();
+        $rows = Job::orderBy(\DB::raw('-completed'), 'asc')->paginate(10);
         $data = [
             'rows'   => $rows,
             'title'  => 'All',
@@ -49,7 +50,7 @@ class JobsController extends Controller
     }
 
     /**
-     * Display a list of completed jobs.
+     * Display a list of completed, uninvoiced jobs.
      *
      * @return \Illuminate\Http\Response
      */
@@ -186,12 +187,13 @@ class JobsController extends Controller
     public function search(Request $request)
     {
         $searchTerm = $request->searchTerm;
-        // $searchResults = Job::Search($searchTerm)->get();
-        $searchResults = Job::Search($searchTerm)->paginate(10);
+        $allSearchResults = Job::Search($searchTerm)->select(['jobs.*'])->get();
+        // dd($allSearchResults);
+        $searchResults = Job::Search($searchTerm)->select(['jobs.*'])->paginate(10);
         $data = [
             'rows'   => $searchResults,
             'title'  => 'Search Results for "' . $searchTerm . '"',
-            'values' => $this->totalValue($searchResults)
+            'values' => $this->totalValue($allSearchResults)
             ];
         return view('admin.jobs.index', $data);
     }

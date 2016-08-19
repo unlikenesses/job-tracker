@@ -20,7 +20,7 @@ Route::group(['middleware' => 'web'], function() {
         Route::patch('jobs/{job}', 'JobsController@update');
         Route::get('jobs/{job}/delete', 'JobsController@confirmDelete');
         Route::delete('jobs/{job}', 'JobsController@destroy');
-        Route::post('jobs/search', 'JobsController@search');
+        Route::get('jobs/search', 'JobsController@search');
         Route::post('jobs/filter', 'JobsController@filter');
 
         Route::get('invoices', 'InvoicesController@index');
