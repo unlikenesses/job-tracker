@@ -188,7 +188,6 @@ class JobsController extends Controller
     {
         $searchTerm = $request->searchTerm;
         $allSearchResults = Job::Search($searchTerm)->select(['jobs.*'])->get();
-        // dd($allSearchResults);
         $searchResults = Job::Search($searchTerm)->select(['jobs.*'])->paginate(10);
         $data = [
             'rows'   => $searchResults,

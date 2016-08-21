@@ -33,7 +33,7 @@ Route::group(['middleware' => 'web'], function() {
         Route::patch('invoices/{invoice}', 'InvoicesController@update');
         Route::get('invoices/{invoice}/delete', 'InvoicesController@confirmDelete');
         Route::delete('invoices/{invoice}', 'InvoicesController@destroy');
-        Route::post('invoices/search', 'InvoicesController@search');
+        Route::get('invoices/search', 'InvoicesController@search');
         Route::post('invoices/filter', 'InvoicesController@filter');
 
         Route::get('clients', 'ClientsController@index');

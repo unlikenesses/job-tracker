@@ -24,11 +24,12 @@ class InvoicesController extends Controller
      */
     public function index()
     {
-        $rows = Invoice::latest()->get();
+        $allRows = Invoice::latest()->get();
+        $rows = Invoice::latest()->paginate(10);
         $data = [
             'rows'   => $rows,
             'title'  => 'All',
-            'values' => $this->totalValue($rows)
+            'values' => $this->totalValue($allRows)
             ];
         return view('admin.invoices.index', $data);
     }
@@ -40,11 +41,12 @@ class InvoicesController extends Controller
      */
     public function overdue()
     {
-        $rows = Invoice::overdue()->orderBy('name', 'desc')->get();
+        $allRows = Invoice::overdue()->orderBy('name', 'desc')->get();
+        $rows = Invoice::overdue()->orderBy('name', 'desc')->paginate(10);
         $data = [
             'rows'   => $rows,
             'title'  => 'Overdue',
-            'values' => $this->totalValue($rows)
+            'values' => $this->totalValue($allRows)
             ];
         return view('admin.invoices.index', $data);
     }
@@ -56,11 +58,12 @@ class InvoicesController extends Controller
      */
     public function not_due()
     {
-        $rows = Invoice::notDue()->orderBy('name', 'desc')->get();
+        $allRows = Invoice::notDue()->orderBy('name', 'desc')->get();
+        $rows = Invoice::notDue()->orderBy('name', 'desc')->paginate(10);
         $data = [
             'rows'   => $rows,
             'title'  => 'Not Due',
-            'values' => $this->totalValue($rows)
+            'values' => $this->totalValue($allRows)
             ];
         return view('admin.invoices.index', $data);
     }
@@ -308,11 +311,12 @@ class InvoicesController extends Controller
     public function search(Request $request)
     {
         $searchTerm = $request->searchTerm;
-        $searchResults = Invoice::Search($searchTerm)->select(['invoices.*', 'clients.name as clientName'])->get();
+        $allSearchResults = Invoice::Search($searchTerm)->select(['invoices.*', 'clients.name as clientName'])->get();
+        $searchResults = Invoice::Search($searchTerm)->select(['invoices.*', 'clients.name as clientName'])->paginate(10);
         $data = [
             'rows'   => $searchResults,
             'title'  => 'Search Results for "' . $searchTerm . '"',
-            'values' => $this->totalValue($searchResults)
+            'values' => $this->totalValue($allSearchResults)
             ];
         return view('admin.invoices.index', $data);
     }

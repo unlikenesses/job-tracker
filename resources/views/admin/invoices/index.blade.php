@@ -72,4 +72,5 @@
 	        @endif
         </div>
     </div>
+    {{ $rows->appends(Request::only('searchTerm'))->links() }}
 @endsection
