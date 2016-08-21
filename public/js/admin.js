@@ -18,7 +18,13 @@ $(function() {
 
     $('a.invertJobs').on('click', function(e) {
         e.preventDefault();
-        $('input[name="jobs[]"').trigger('click');
+        $('input[name="jobs[]"]:visible').trigger('click');
+    });
+
+    $('#invoiceClientSelect').change(function() {
+        var clientId = $(this).val();
+        $('.invoiceJob').show();
+        $('.invoiceJob:not([data-client=' + clientId + '])').hide();
     });
 
     function showJobEditLink(job) {

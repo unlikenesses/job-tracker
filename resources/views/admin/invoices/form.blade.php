@@ -10,7 +10,9 @@
         @endforeach
     @endif
     @foreach ($jobs as $job)
+        <div data-client="{{ $job->client_id }}" class="invoiceJob">
         <input type="checkbox" name="jobs[]" id="amount{{ $job->amount }}" value="{{ $job->id }}" class="jobs_checkboxes"> {{ $projects[$job->project_id] . ': ' . $job->name . '(' . $currencySymbols[$job->currency_id] . $job->amount . ')' }} <br>
+        </div>
     @endforeach
     </div>
 </div>
@@ -29,7 +31,8 @@
 
             @if ($field == 'client_id')
 
-                <select name="{{ $field }}" class="form-control">
+                <select name="{{ $field }}" class="form-control" id="invoiceClientSelect">
+                    <option value="0">Select a client:</option>
                     @foreach ($clients as $client)
                         <option value="{{ $client->id }}" @if (isset($row->$field) && $row->$field == $client->id) {!! 'selected="selected"' !!} @endif>
                             {{ $client->name }}
