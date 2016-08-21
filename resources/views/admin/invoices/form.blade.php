@@ -11,7 +11,7 @@
     @endif
     @foreach ($jobs as $job)
         <div data-client="{{ $job->client_id }}" class="invoiceJob" @if (old('client_id') && old('client_id') != $job->client_id) {!! 'style="display:none"' !!} @endif>
-        <input type="checkbox" name="jobs[]" id="amount{{ $job->amount }}" value="{{ $job->id }}" class="jobs_checkboxes"> {{ $projects[$job->project_id] . ': ' . $job->name . '(' . $currencySymbols[$job->currency_id] . $job->amount . ')' }} <br>
+        <input type="checkbox" name="jobs[]" id="amount{{ $job->amount }}" value="{{ $job->id }}" class="jobs_checkboxes" @if (old('jobs') && in_array($job->id, old('jobs'))) {{ 'checked' }} @endif> {{ $projects[$job->project_id] . ': ' . $job->name . '(' . $currencySymbols[$job->currency_id] . $job->amount . ')' }} <br>
         </div>
     @endforeach
     </div>
