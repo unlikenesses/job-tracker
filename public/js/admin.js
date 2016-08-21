@@ -18,6 +18,11 @@ $(function() {
 
     $('a.invertJobs').on('click', function(e) {
         e.preventDefault();
+        if ($('span', this).html() == 'Check All') {
+            $('span', this).html('Uncheck All');
+        } else {
+            $('span', this).html('Check All');
+        }
         $('input[name="jobs[]"]:visible').trigger('click');
     });
 

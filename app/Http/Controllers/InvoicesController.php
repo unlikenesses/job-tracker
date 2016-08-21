@@ -93,6 +93,8 @@ class InvoicesController extends Controller
     {
         $this->validate($request, [
             'name'      => 'required',
+            'client_id' => 'required',
+            'jobs'      => 'required',
             'invoiced'  => 'required|date',
             'due'       => 'required|date',
             'amount'    => 'numeric'
@@ -149,6 +151,7 @@ class InvoicesController extends Controller
     {
         $this->validate($request, [
             'name'      => 'required',
+            'jobs'      => 'required',
             'invoiced'  => 'required|date',
             'due'       => 'required|date',
             'amount'    => 'numeric'

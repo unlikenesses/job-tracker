@@ -1,16 +1,16 @@
 <div class="form-group">
     <label for="jobs" class="col-sm-3 control-label">
         Jobs
+        <p><a href="#" class="invertJobs"><i class="fa fa-check-square-o"></i> <span>Check All</span></a></p>
     </label>
     <div class="col-sm-6">
-    <p><a href="#" class="invertJobs">Invert All</a></p>
     @if (isset($invoice_jobs))
         @foreach ($invoice_jobs as $job)
             <input type="checkbox" name="jobs[]" id="amount{{ $job->amount }}" value="{{ $job->id }}" class="jobs_checkboxes" checked> {{ $projects[$job->project_id] . ': ' . $job->name . '(' . $currencySymbols[$job->currency_id] . $job->amount . ')' }} <br>
         @endforeach
     @endif
     @foreach ($jobs as $job)
-        <div data-client="{{ $job->client_id }}" class="invoiceJob">
+        <div data-client="{{ $job->client_id }}" class="invoiceJob" @if (old('client_id') && old('client_id') != $job->client_id) {!! 'style="display:none"' !!} @endif>
         <input type="checkbox" name="jobs[]" id="amount{{ $job->amount }}" value="{{ $job->id }}" class="jobs_checkboxes"> {{ $projects[$job->project_id] . ': ' . $job->name . '(' . $currencySymbols[$job->currency_id] . $job->amount . ')' }} <br>
         </div>
     @endforeach
@@ -32,9 +32,9 @@
             @if ($field == 'client_id')
 
                 <select name="{{ $field }}" class="form-control" id="invoiceClientSelect">
-                    <option value="0">Select a client:</option>
+                    <option value="">Select a client:</option>
                     @foreach ($clients as $client)
-                        <option value="{{ $client->id }}" @if (isset($row->$field) && $row->$field == $client->id) {!! 'selected="selected"' !!} @endif>
+                        <option value="{{ $client->id }}" @if ((isset($row->$field) && $row->$field == $client->id) || (old($field) == $client->id)) {!! 'selected="selected"' !!} @endif>
                             {{ $client->name }}
                         </option>
                     @endforeach
