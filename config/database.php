@@ -64,6 +64,18 @@ return [
             'strict'    => false,
         ],
 
+        'mysql_testing' => [
+            'driver'    => 'mysql',
+            'host'      => env('TEST_DB_HOST', 'localhost'),
+            'database'  => env('TEST_DB_DATABASE', 'larajobs_testing'),
+            'username'  => env('TEST_DB_USERNAME', 'root'),
+            'password'  => env('TEST_DB_PASSWORD', ''),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+        ],
+
         'pgsql' => [
             'driver'   => 'pgsql',
             'host'     => env('DB_HOST', 'localhost'),

@@ -205,19 +205,13 @@ class JobsController extends Controller
      */
     public function filter(Request $request)
     {
-        $rows = Job::forClient($request->clientId)->get();
-        foreach ($rows as $row) {
-            $response[] = [
-                'id'             => $row->id,
-                'client'         => Client::find($row->client_id)->name,
-                'project'        => Project::find($row->project_id)->name,
-                'name'           => $row->name,
-                'started'        => $row->started,
-                'completed'      => $row->completed,
-                'currencySymbol' => Currency::find($row->currency_id)->symbol,
-                'amount'         => $row->amount
+        $allRows = Job::orderBy(\DB::raw('-completed'), 'asc')->forClient($request->clientId)->get();
+        $rows = Job::orderBy(\DB::raw('-completed'), 'asc')->forClient($request->clientId)->paginate(10);
+        $data = [
+            'rows'   => $rows,
+            'title'  => Client::find($request->clientId)->name,
+            'values' => $this->totalValue($allRows)
             ];
-        }
-        return response()->json($response);
+        return view('admin.jobs.index', $data);
     }
 }

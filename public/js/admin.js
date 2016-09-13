@@ -89,17 +89,10 @@ $(function() {
         return str;
     }
 
-    $('select[name="jobsClientFilter"]').change(function() {
-        var clientId = $(this).val();
-        var token = $('meta[name="csrf-token"').attr('content');
-        $.post('/jobs/filter', {_token: token, clientId: clientId}, function(data) {
-            $('#jobsTable tbody tr').remove();
-            $.each(data, function(index, job) {
-                $('#jobsTable tbody').append(jobRow(job));
-            });
-        }).fail(function() {
-            console.log('Failed to fetch data.');
-        });
+    $('select[name="clientId"]').change(function() {
+
+        this.form.submit();
+
     });
 
     $('select[name="invoicesClientFilter"]').change(function() {

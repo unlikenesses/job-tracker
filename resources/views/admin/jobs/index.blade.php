@@ -67,5 +67,5 @@
 	        @endif
         </div>
     </div>
-    {{ $rows->appends(Request::only('searchTerm'))->links() }}
+    {{ $rows->appends(Request::only('searchTerm', 'clientId'))->links() }}
 @endsection

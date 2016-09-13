@@ -332,6 +332,16 @@ class InvoicesController extends Controller
      */
     public function filter(Request $request)
     {
+        $allRows = Invoice::latest()->forClient($request->clientId)->get();
+        $rows = Invoice::latest()->forClient($request->clientId)->paginate(10);
+        $data = [
+            'rows'   => $rows,
+            'title'  => Client::find($request->clientId)->name,
+            'values' => $this->totalValue($allRows)
+            ];
+        return view('admin.invoices.index', $data);
+
+
         $rows = Invoice::forClient($request->clientId)->get();
         foreach ($rows as $row) {
             $response[] = [

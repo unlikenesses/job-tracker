@@ -11,9 +11,9 @@
 
     <div class="col-md-3">
 
-        <form action="{{ url('invoices/clientFilter') }}" method="post" class="form-inline">
-            <select name="invoicesClientFilter" class="form-control">
-                <option value="0">Filter by client:</option>
+        <form action="{{ url('invoices/filter') }}" method="get" name="jobsFilter" class="form-inline">
+            <select name="clientId" class="form-control">
+                <option value="0">All invoices by client:</option>
                 @foreach ($allClients as $client)
                     <option value="{{ $client->id }}">
                         {{ $client->name }}

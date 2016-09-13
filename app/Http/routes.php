@@ -21,7 +21,7 @@ Route::group(['middleware' => 'web'], function() {
         Route::get('jobs/{job}/delete', 'JobsController@confirmDelete');
         Route::delete('jobs/{job}', 'JobsController@destroy');
         Route::get('jobs/search', 'JobsController@search');
-        Route::post('jobs/filter', 'JobsController@filter');
+        Route::get('jobs/filter', 'JobsController@filter');
 
         Route::get('invoices', 'InvoicesController@index');
         Route::get('invoices/overdue', 'InvoicesController@overdue');
@@ -34,7 +34,7 @@ Route::group(['middleware' => 'web'], function() {
         Route::get('invoices/{invoice}/delete', 'InvoicesController@confirmDelete');
         Route::delete('invoices/{invoice}', 'InvoicesController@destroy');
         Route::get('invoices/search', 'InvoicesController@search');
-        Route::post('invoices/filter', 'InvoicesController@filter');
+        Route::get('invoices/filter', 'InvoicesController@filter');
 
         Route::get('clients', 'ClientsController@index');
         Route::get('clients/create', 'ClientsController@create');
