@@ -190,9 +190,10 @@ class JobsController extends Controller
         $allSearchResults = Job::Search($searchTerm)->select(['jobs.*'])->get();
         $searchResults = Job::Search($searchTerm)->select(['jobs.*'])->paginate(10);
         $data = [
-            'rows'   => $searchResults,
-            'title'  => 'Search Results for "' . $searchTerm . '"',
-            'values' => $this->totalValue($allSearchResults)
+            'rows'       => $searchResults,
+            'searchTerm' => $searchTerm,
+            'title'      => 'Search Results for "' . $searchTerm . '"',
+            'values'     => $this->totalValue($allSearchResults)
             ];
         return view('admin.jobs.index', $data);
     }

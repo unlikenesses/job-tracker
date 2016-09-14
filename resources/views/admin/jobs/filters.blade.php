@@ -3,7 +3,7 @@
     <div class="col-md-4">
 
         <form action="{{ url('jobs/search') }}" method="get" class="form-inline">
-            <input type="text" name="searchTerm" placeholder="Search in all jobs" class="form-control" value="{{ old('searchTerm') }}" required>
+            <input type="text" name="searchTerm" placeholder="Search in all jobs" class="form-control" value="@if (isset($searchTerm) && $searchTerm != ''){{ $searchTerm }}@endif" required>
             <input type="submit" value="Search" class="btn btn-primary">
         </form>
 

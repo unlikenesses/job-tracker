@@ -317,9 +317,10 @@ class InvoicesController extends Controller
         $allSearchResults = Invoice::Search($searchTerm)->select(['invoices.*', 'clients.name as clientName'])->get();
         $searchResults = Invoice::Search($searchTerm)->select(['invoices.*', 'clients.name as clientName'])->paginate(10);
         $data = [
-            'rows'   => $searchResults,
-            'title'  => 'Search Results for "' . $searchTerm . '"',
-            'values' => $this->totalValue($allSearchResults)
+            'rows'       => $searchResults,
+            'searchTerm' => $searchTerm,
+            'title'      => 'Search Results for "' . $searchTerm . '"',
+            'values'     => $this->totalValue($allSearchResults)
             ];
         return view('admin.invoices.index', $data);
     }
