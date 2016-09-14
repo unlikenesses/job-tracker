@@ -15,7 +15,7 @@
             <select name="clientId" class="form-control">
                 <option value="0">All invoices by client:</option>
                 @foreach ($allClients as $client)
-                    <option value="{{ $client->id }}">
+                    <option value="{{ $client->id }}" @if (isset($clientId) && $clientId == $client->id) selected="selected" @endif>
                         {{ $client->name }}
                     </option>
                 @endforeach

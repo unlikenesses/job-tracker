@@ -205,12 +205,16 @@ class JobsController extends Controller
      */
     public function filter(Request $request)
     {
+        if ($request->clientId == 0) {
+            return redirect('jobs');
+        }
         $allRows = Job::orderBy(\DB::raw('-completed'), 'asc')->forClient($request->clientId)->get();
         $rows = Job::orderBy(\DB::raw('-completed'), 'asc')->forClient($request->clientId)->paginate(10);
         $data = [
-            'rows'   => $rows,
-            'title'  => Client::find($request->clientId)->name,
-            'values' => $this->totalValue($allRows)
+            'rows'     => $rows,
+            'clientId' => $request->clientId,
+            'values'   => $this->totalValue($allRows),
+            'title'    => Client::find($request->clientId)->name
             ];
         return view('admin.jobs.index', $data);
     }
