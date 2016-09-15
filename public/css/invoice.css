@@ -8,7 +8,19 @@ h1 {
 	font-size: 20px;
 }
 
-table.details {
+td.address {
+    line-height: 22px;
+}
+
+td.address p {
+    margin: 0;
+}
+
+td.details {
+    line-height: 32px;
+}
+
+table.jobs {
     border-collapse: collapse;
 	border: 1px solid #aaaaaa;
-} 
+}

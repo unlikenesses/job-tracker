@@ -314,8 +314,8 @@ class InvoicesController extends Controller
     public function search(Request $request)
     {
         $searchTerm = $request->searchTerm;
-        $allSearchResults = Invoice::Search($searchTerm)->select(['invoices.*', 'clients.name as clientName'])->get();
-        $searchResults = Invoice::Search($searchTerm)->select(['invoices.*', 'clients.name as clientName'])->paginate(10);
+        $allSearchResults = Invoice::Search($searchTerm)->distinct()->select(['invoices.*', 'clients.name as clientName'])->get();
+        $searchResults = Invoice::Search($searchTerm)->distinct()->select(['invoices.*', 'clients.name as clientName'])->paginate(10);
         $data = [
             'rows'       => $searchResults,
             'searchTerm' => $searchTerm,

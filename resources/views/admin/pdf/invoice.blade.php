@@ -11,12 +11,12 @@
 		</td>
 	</tr>
 	<tr>
-		<td valign="top" width="70%" style="line-height:20px">
-			{!! $address->body !!}<br />
+		<td valign="top" width="70%" class="address">
+			{!! $address->body !!}<br /><br />
 			<strong>{{ $client->name }}</strong>
 			{!! $client->address !!}
 		</td>
-		<td valign="top" width="30%" style="line-height:25px">
+		<td valign="top" width="30%" class="details">
 			INVOICE NUMBER: {{ $invoice->name }}<br />
 			DATE: {{ date('d/m/Y', strtotime($invoice->invoiced)) }}<br />
 			DUE DATE: {{ date('d/m/Y', strtotime($invoice->due)) }}
@@ -24,7 +24,7 @@
 	</tr>
 	<tr height="30"><td height="30"></td></tr>
 </table>
-<table width="100%" cellpadding="5" cellspacing="4" border="1" class="details">
+<table width="100%" cellpadding="5" cellspacing="4" border="1" class="jobs">
 	<tr>
 		<td><strong>Start</strong></td>
 		<td><strong>Complete</strong></td>
@@ -42,14 +42,14 @@
 	<tr>
 		<td colspan="4" align="right">
 			<table cellpadding="0" cellspacing="0" border="0">
-			<tr>
-				<td>
-					<strong>TOTAL:</strong>
-				</td>
-				<td>
-					<strong>{{ $currencySymbols[$invoice->currency_id] . number_format($invoice->amount, 2) }}</strong>
-				</td>
-			</tr>
+				<tr>
+					<td>
+						<strong>TOTAL:&nbsp;</strong>
+					</td>
+					<td>
+						<strong>{{ $currencySymbols[$invoice->currency_id] . number_format($invoice->amount, 2) }}</strong>
+					</td>
+				</tr>
 			</table>
 		</td>
 	</tr>
