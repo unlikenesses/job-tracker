@@ -83,4 +83,6 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('profile', 'UsersController@editProfile');
     Route::patch('profile', 'UsersController@updateProfile');
 
+    Route::get('/logout', 'Auth\LoginController@logout');
+
 });
