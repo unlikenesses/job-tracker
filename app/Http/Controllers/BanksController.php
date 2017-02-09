@@ -42,6 +42,7 @@ class BanksController extends Controller
         $this->validate($request, ['name' => 'required']);
         $bank = new Bank($request->all());
         $bank->save();
+
         return redirect('banks');
     }
 
@@ -67,6 +68,7 @@ class BanksController extends Controller
     {
         $this->validate($request, ['name' => 'required']);
         $bank->update($request->all());
+
         return redirect('banks');
     }
 
@@ -90,6 +92,7 @@ class BanksController extends Controller
     public function destroy(Bank $bank)
     {
         $bank->delete();
+        
         return redirect('banks');
     }
 }

@@ -42,6 +42,7 @@ class ClientsController extends Controller
         $this->validate($request, ['name' => 'required']);
         $client = new Client($request->all());
         $client->save();
+
         return redirect('clients');
     }
 
@@ -67,6 +68,7 @@ class ClientsController extends Controller
     {
         $this->validate($request, ['name' => 'required']);
         $client->update($request->all());
+
         return redirect('clients');
     }
 
@@ -90,6 +92,7 @@ class ClientsController extends Controller
     public function destroy(Client $client)
     {
         $client->delete();
+        
         return redirect('clients');
     }
 }

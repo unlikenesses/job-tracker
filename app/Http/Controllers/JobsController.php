@@ -24,12 +24,13 @@ class JobsController extends Controller
         // Ordering hints from http://stackoverflow.com/a/31711803
         $allRows = Job::orderBy(\DB::raw('-completed'), 'asc')->get();
         $rows = Job::orderBy(\DB::raw('-completed'), 'asc')->paginate(10);
-        $data = [
+
+        return view('admin.jobs.index', [
             'rows'   => $rows,
             'title'  => 'All',
             'values' => $this->totalValue($allRows)
-            ];
-        return view('admin.jobs.index', $data);
+            ]
+        );
     }
 
     /**
@@ -41,12 +42,13 @@ class JobsController extends Controller
     {
         $allRows = Job::open()->latest()->get();
         $rows = Job::open()->latest()->paginate(10);
-        $data = [
+
+        return view('admin.jobs.index', [
             'rows'   => $rows,
             'title'  => 'Open',
             'values' => $this->totalValue($allRows)
-            ];
-        return view('admin.jobs.index', $data);
+            ]
+        );
     }
 
     /**
@@ -58,12 +60,13 @@ class JobsController extends Controller
     {
         $allRows = Job::completed()->notInvoiced()->latest()->get();
         $rows = Job::completed()->notInvoiced()->latest()->paginate(10);
-        $data = [
+
+        return view('admin.jobs.index', [
             'rows'   => $rows,
             'title'  => 'Completed, Not Invoiced',
             'values' => $this->totalValue($allRows)
-            ];
-        return view('admin.jobs.index', $data);
+            ]
+        );
     }
 
     /**
@@ -92,6 +95,7 @@ class JobsController extends Controller
         ]);
         $job = new Job($request->all());
         $job->save();
+
         return redirect('jobs');
     }
 
@@ -122,6 +126,7 @@ class JobsController extends Controller
             'amount'    => 'numeric'
         ]);
         $job->update($request->all());
+
         return redirect('jobs');
     }
 
@@ -133,12 +138,12 @@ class JobsController extends Controller
      */
     public function confirmDelete(Job $job)
     {
-        $data = [
+        return view('admin.jobs.confirmDelete', [
             'row'     => $job,
             'client'  => Client::find($job->client_id)->name,
             'project' => Project::find($job->project_id)->name
-        ];
-        return view('admin.jobs.confirmDelete', $data);
+            ]
+        );
     }
 
     /**
@@ -150,6 +155,7 @@ class JobsController extends Controller
     public function destroy(Job $job)
     {
         $job->delete();
+
         return redirect('jobs');
     }
 
@@ -175,6 +181,7 @@ class JobsController extends Controller
         foreach ($values as $symbol => $amount) {
             if ($amount > 0) $totals .= $symbol . $amount . ', ';
         }
+
         return trim($totals, ', ');
     }
 
@@ -189,13 +196,14 @@ class JobsController extends Controller
         $searchTerm = $request->searchTerm;
         $allSearchResults = Job::Search($searchTerm)->distinct()->select(['jobs.*'])->get();
         $searchResults = Job::Search($searchTerm)->distinct()->select(['jobs.*'])->paginate(10);
-        $data = [
+
+        return view('admin.jobs.index', [
             'rows'       => $searchResults,
             'searchTerm' => $searchTerm,
             'title'      => 'Search Results for "' . $searchTerm . '"',
             'values'     => $this->totalValue($allSearchResults)
-            ];
-        return view('admin.jobs.index', $data);
+            ]
+        );
     }
 
     /**
@@ -211,12 +219,13 @@ class JobsController extends Controller
         }
         $allRows = Job::orderBy(\DB::raw('-completed'), 'asc')->forClient($request->clientId)->get();
         $rows = Job::orderBy(\DB::raw('-completed'), 'asc')->forClient($request->clientId)->paginate(10);
-        $data = [
+
+        return view('admin.jobs.index', [
             'rows'     => $rows,
             'clientId' => $request->clientId,
             'values'   => $this->totalValue($allRows),
             'title'    => Client::find($request->clientId)->name
-            ];
-        return view('admin.jobs.index', $data);
+            ]
+        );
     }
 }

@@ -20,6 +20,7 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::where('role', 500)->get();
+
         return view('admin.users.index', ['users' => $users]);
     }
 
@@ -47,6 +48,7 @@ class UsersController extends Controller
         $user->role     = $request->role;
         $user->password = bcrypt($request->password);
         $user->save();
+
         return redirect('users');
     }
 
@@ -58,6 +60,7 @@ class UsersController extends Controller
     public function editProfile()
     {
        $user = Auth::user();
+
        return view('admin.users.profile', ['user' => $user]);
     }
 
@@ -76,6 +79,7 @@ class UsersController extends Controller
         if ($request->password != '') {
             $user->update(['password' => bcrypt($request->password)]);
         }
+        
         return redirect('profile');
     }
 }

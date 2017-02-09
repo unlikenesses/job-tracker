@@ -42,6 +42,7 @@ class CurrenciesController extends Controller
         $this->validate($request, ['name' => 'required']);
         $client = new Currency($request->all());
         $client->save();
+
         return redirect('currencies');
     }
 
@@ -67,6 +68,7 @@ class CurrenciesController extends Controller
     {
         $this->validate($request, ['name' => 'required']);
         $currency->update($request->all());
+
         return redirect('currencies');
     }
 
@@ -90,6 +92,7 @@ class CurrenciesController extends Controller
     public function destroy(Currency $currency)
     {
         $currency->delete();
+        
         return redirect('currencies');
     }
 }

@@ -23,11 +23,12 @@ class ProjectsController extends Controller
         foreach ($clients as $client) {
             $client_arr[$client->id] = $client->name;
         }
-        $data = [
+
+        return view('admin.projects.index', [
             'rows'    => Project::orderBy('name', 'asc')->get(),
             'clients' => $client_arr
-            ];
-        return view('admin.projects.index', $data);
+            ]
+        );
     }
 
     /**
@@ -51,6 +52,7 @@ class ProjectsController extends Controller
         $this->validate($request, ['name' => 'required']);
         $project = new Project($request->all());
         $project->save();
+
         return redirect('projects');
     }
 
@@ -76,6 +78,7 @@ class ProjectsController extends Controller
     {
         $this->validate($request, ['name' => 'required']);
         $project->update($request->all());
+
         return redirect('projects');
     }
 
@@ -99,6 +102,7 @@ class ProjectsController extends Controller
     public function destroy(Project $project)
     {
         $project->delete();
+
         return redirect('projects');
     }
 
@@ -111,6 +115,7 @@ class ProjectsController extends Controller
     public function getProjectsByClient(Request $request)
     {
         $projects = Project::where('client_id', $request->clientId)->orderBy('name', 'asc')->get();
+        
         return response()->json($projects);
     }
 }
