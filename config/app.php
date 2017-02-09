@@ -13,6 +13,8 @@ return [
     |
     */
 
+    'name' => 'Job Tracker',
+
     'env' => env('APP_ENV', 'production'),
 
     /*
