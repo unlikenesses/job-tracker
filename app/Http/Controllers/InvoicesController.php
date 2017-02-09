@@ -26,12 +26,13 @@ class InvoicesController extends Controller
     {
         $allRows = Invoice::latest()->get();
         $rows = Invoice::latest()->paginate(10);
-        $data = [
+
+        return view('admin.invoices.index', [
             'rows'   => $rows,
             'title'  => 'All',
             'values' => $this->totalValue($allRows)
-            ];
-        return view('admin.invoices.index', $data);
+            ]
+        );
     }
 
     /**
@@ -43,12 +44,13 @@ class InvoicesController extends Controller
     {
         $allRows = Invoice::overdue()->orderBy('name', 'desc')->get();
         $rows = Invoice::overdue()->orderBy('name', 'desc')->paginate(10);
-        $data = [
+
+        return view('admin.invoices.index', [
             'rows'   => $rows,
             'title'  => 'Overdue',
             'values' => $this->totalValue($allRows)
-            ];
-        return view('admin.invoices.index', $data);
+            ]
+        );
     }
 
     /**
@@ -60,12 +62,13 @@ class InvoicesController extends Controller
     {
         $allRows = Invoice::notDue()->orderBy('name', 'desc')->get();
         $rows = Invoice::notDue()->orderBy('name', 'desc')->paginate(10);
-        $data = [
+
+        return view('admin.invoices.index', [
             'rows'   => $rows,
             'title'  => 'Not Due',
             'values' => $this->totalValue($allRows)
-            ];
-        return view('admin.invoices.index', $data);
+            ]
+        );
     }
 
     /**
@@ -75,12 +78,12 @@ class InvoicesController extends Controller
      */
     public function create()
     {
-        $data = [
+        return view('admin.invoices.create', [
             'new_invoice_number' => $this->newNumber(),
             'invoiced'           => date('d-m-Y'),
             'due'                => $this->dueDate()
-            ];
-        return view('admin.invoices.create', $data);
+            ]
+        );
     }
 
     /**
@@ -104,6 +107,7 @@ class InvoicesController extends Controller
         if ($request->jobs) {
             $this->updateInvoiceJobs($request, $invoice->id);
         }
+
         return redirect('invoices');
     }
 
@@ -133,11 +137,11 @@ class InvoicesController extends Controller
      */
     public function edit(Invoice $invoice)
     {
-        $data = [
+        return view('admin.invoices.edit', [
             'invoice_jobs' => Job::inInvoice($invoice->id)->get(),
             'row'          => $invoice
-            ];
-        return view('admin.invoices.edit', $data);
+            ]
+        );
     }
 
     /**
@@ -169,6 +173,7 @@ class InvoicesController extends Controller
         if ($request->jobs) {
             $this->updateInvoiceJobs($request, $invoice->id);
         }
+
         return redirect('invoices');
     }
 
@@ -180,11 +185,11 @@ class InvoicesController extends Controller
      */
     public function confirmDelete(Invoice $invoice)
     {
-        $data = [
+        return view('admin.invoices.confirmDelete', [
             'row'    => $invoice,
             'client' => Client::find($invoice->client_id)->name,
-        ];
-        return view('admin.invoices.confirmDelete', $data);
+            ]
+        );
     }
 
     /**
@@ -203,6 +208,7 @@ class InvoicesController extends Controller
             ]);
         }
         $invoice->delete();
+
         return redirect('invoices');
     }
 
@@ -227,6 +233,7 @@ class InvoicesController extends Controller
             $new_invoice_year = $current_year;
             $new_invoice_number = '001';
         }
+        
         return $new_invoice_year . '-' . $new_invoice_number;
     }
 
@@ -244,6 +251,7 @@ class InvoicesController extends Controller
         if (date('N', strtotime('+30 days')) == 7) {
             $due = date('d-m-Y', strtotime('+31 days'));
         }
+
         return $due;
     }
 
@@ -271,6 +279,7 @@ class InvoicesController extends Controller
         $footerStr = '<!doctype html><body style="font-family:Arial">' . $bank->details . $footer->body . '</body></html>';
         PDF::setOption('footer-html', $footerStr);
         $pdf = PDF::loadView('admin.pdf.invoice', $data);
+
         return $pdf->download($invoice->name . '.pdf');
     }
 
@@ -298,6 +307,7 @@ class InvoicesController extends Controller
                 $totals .= $symbol . $amount . ', ';
             }
         }
+
         return trim($totals, ', ');
     }
 
@@ -312,13 +322,14 @@ class InvoicesController extends Controller
         $searchTerm = $request->searchTerm;
         $allSearchResults = Invoice::Search($searchTerm)->distinct()->select(['invoices.*', 'clients.name as clientName'])->get();
         $searchResults = Invoice::Search($searchTerm)->distinct()->select(['invoices.*', 'clients.name as clientName'])->paginate(10);
-        $data = [
+
+        return view('admin.invoices.index', [
             'rows'       => $searchResults,
             'searchTerm' => $searchTerm,
             'title'      => 'Search Results for "' . $searchTerm . '"',
             'values'     => $this->totalValue($allSearchResults)
-            ];
-        return view('admin.invoices.index', $data);
+            ]
+        );
     }
 
     /**
@@ -334,12 +345,13 @@ class InvoicesController extends Controller
         }
         $allRows = Invoice::latest()->forClient($request->clientId)->get();
         $rows = Invoice::latest()->forClient($request->clientId)->paginate(10);
-        $data = [
+
+        return view('admin.invoices.index', [
             'rows'     => $rows,
             'clientId' => $request->clientId,
             'values'   => $this->totalValue($allRows),
             'title'    => Client::find($request->clientId)->name
-            ];
-        return view('admin.invoices.index', $data);
+            ]
+        );
     }
 }
