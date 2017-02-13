@@ -2,6 +2,7 @@
 <head>
 	<title>{{ $invoice->name }}</title>
 	<link rel="stylesheet" href="{{ asset('css/invoice.css') }}">
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
 </head>
 <body>
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
